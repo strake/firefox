@@ -2124,25 +2124,11 @@ function BrowserBack(aEvent) {
 }
 
 function BrowserHandleBackspace() {
-  switch (Services.prefs.getIntPref("browser.backspace_action")) {
-  case 0:
-    BrowserBack();
-    break;
-  case 1:
-    goDoCommand("cmd_scrollPageUp");
-    break;
-  }
+  goDoCommand("cmd_scrollPageUp");
 }
 
 function BrowserHandleShiftBackspace() {
-  switch (Services.prefs.getIntPref("browser.backspace_action")) {
-  case 0:
-    BrowserForward();
-    break;
-  case 1:
-    goDoCommand("cmd_scrollPageDown");
-    break;
-  }
+  goDoCommand("cmd_scrollPageDown");
 }
 
 function BrowserStop() {

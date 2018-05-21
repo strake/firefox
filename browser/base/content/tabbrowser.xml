@@ -1090,32 +1090,18 @@
       ]]></handler>
 
       <handler event="keydown" group="system"><![CDATA[
-        if (event.altKey || event.shiftKey)
-          return;
-
-        let wrongModifiers;
-        if (AppConstants.platform == "macosx") {
-          wrongModifiers = !event.metaKey;
-        } else {
-          wrongModifiers = !event.ctrlKey || event.metaKey;
-        }
-
-        if (wrongModifiers)
+        if (!event.ctrlKey || !event.shiftKey || event.altKey || event.metaKey)
           return;
 
         // Don't check if the event was already consumed because tab navigation
         // should work always for better user experience.
 
         switch (event.keyCode) {
-          case KeyEvent.DOM_VK_UP:
+          case KeyEvent.DOM_VK_OPEN_BRACKET:
             gBrowser.moveTabBackward();
             break;
-          case KeyEvent.DOM_VK_DOWN:
+          case KeyEvent.DOM_VK_CLOSE_BRACKET:
             gBrowser.moveTabForward();
-            break;
-          case KeyEvent.DOM_VK_RIGHT:
-          case KeyEvent.DOM_VK_LEFT:
-            gBrowser.moveTabOver(event);
             break;
           case KeyEvent.DOM_VK_HOME:
             gBrowser.moveTabToStart();

@@ -171,19 +171,19 @@ function whereToOpenLink(e, ignoreButton, ignoreAlt) {
 
   // ignoreButton allows "middle-click paste" to use function without always opening in a new window.
   var middle = !ignoreButton && e.button == 1;
-  var middleUsesTabs = getBoolPref("browser.tabs.opentabfor.middleclick", true);
 
   // Don't do anything special with right-mouse clicks.  They're probably clicks on context menu items.
 
-  var metaKey = AppConstants.platform == "macosx" ? meta : ctrl;
-  if (metaKey || (middle && middleUsesTabs))
-    return shift ? "tabshifted" : "tab";
+  if (shift || middle)
+    return "tab";
 
   if (alt && getBoolPref("browser.altClickSave", false))
     return "save";
 
+/*
   if (shift || (middle && !middleUsesTabs))
     return "window";
+*/
 
   return "current";
 }

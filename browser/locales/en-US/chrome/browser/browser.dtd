@@ -310,23 +310,23 @@ These should match what Safari and other Apple applications use on OS X Lion. --
 <!ENTITY editMenu.label         "Edit">
 <!ENTITY editMenu.accesskey       "E">
 <!ENTITY undoCmd.label            "Undo">
-<!ENTITY undoCmd.key            "Z">
+<!ENTITY undoCmd.key            "z">
 <!ENTITY undoCmd.accesskey          "U">
 <!ENTITY redoCmd.label            "Redo">
-<!ENTITY redoCmd.key            "Y">
+<!ENTITY redoCmd.key            "Z">
 <!ENTITY redoCmd.accesskey          "R">
 <!ENTITY cutCmd.label           "Cut">
-<!ENTITY cutCmd.key             "X">
+<!ENTITY cutCmd.key             "D">
 <!ENTITY cutCmd.accesskey         "t">
 <!ENTITY copyCmd.label            "Copy">
 <!ENTITY copyCmd.key            "C">
 <!ENTITY copyCmd.accesskey          "C">
 <!ENTITY pasteCmd.label           "Paste">
-<!ENTITY pasteCmd.key           "V">
+<!ENTITY pasteCmd.key           "Y">
 <!ENTITY pasteCmd.accesskey         "P">
 <!ENTITY deleteCmd.label          "Delete">
-<!ENTITY deleteCmd.key            "D">
-<!ENTITY deleteCmd.accesskey        "D">
+<!ENTITY deleteCmd.key            "">
+<!ENTITY deleteCmd.accesskey        "">
 <!ENTITY selectAllCmd.label         "Select All">
 <!ENTITY selectAllCmd.key         "A">
 <!ENTITY selectAllCmd.accesskey       "A">
@@ -434,7 +434,7 @@ These should match what Safari and other Apple applications use on OS X Lion. --
     secondary commands. -->
 <!ENTITY moreMenu.label "More">
 
-<!ENTITY openCmd.commandkey           "l">
+<!ENTITY openCmd.commandkey           "g">
 <!ENTITY urlbar.placeholder2          "Search or enter address">
 <!ENTITY urlbar.accesskey             "d">
 <!-- LOCALIZATION NOTE (urlbar.extension.label): Used to indicate that a selected autocomplete entry is provided by an extension. -->
@@ -576,7 +576,7 @@ These should match what Safari and other Apple applications use on OS X Lion. --
 <!ENTITY savePageCmd.accesskey        "A">
 <!-- alternate for content area context menu -->
 <!ENTITY savePageCmd.accesskey2       "P">
-<!ENTITY savePageCmd.commandkey       "s">
+<!ENTITY savePageCmd.commandkey       "">
 <!ENTITY saveFrameCmd.label           "Save Frame As…">
 <!ENTITY saveFrameCmd.accesskey       "F">
 <!ENTITY printFrameCmd.label          "Print Frame…">
@@ -698,8 +698,8 @@ you can use these alternative items. Otherwise, their values should be empty.  -
 <!ENTITY quitApplicationCmdWin2.label       "Exit">
 <!ENTITY quitApplicationCmdWin2.accesskey   "x">
 <!ENTITY quitApplicationCmdWin2.tooltip     "Exit &brandShorterName;">
-<!ENTITY goBackCmd.commandKey "[">
-<!ENTITY goForwardCmd.commandKey "]">
+<!ENTITY goBackCmd.commandKey ",">
+<!ENTITY goForwardCmd.commandKey ".">
 <!ENTITY quitApplicationCmd.label       "Quit">
 <!ENTITY quitApplicationCmd.accesskey   "Q">
 <!ENTITY quitApplicationCmdMac2.label   "Quit &brandShorterName;">
@@ -734,11 +734,11 @@ you can use these alternative items. Otherwise, their values should be empty.  -
 <!ENTITY bidiSwitchTextDirectionItem.commandkey   "X">
 
 <!ENTITY findOnCmd.label     "Find in This Page…">
-<!ENTITY findOnCmd.accesskey "F">
-<!ENTITY findOnCmd.commandkey "f">
+<!ENTITY findOnCmd.accesskey "/">
+<!ENTITY findOnCmd.commandkey "/">
 <!ENTITY findAgainCmd.label  "Find Again">
-<!ENTITY findAgainCmd.accesskey "g">
-<!ENTITY findAgainCmd.commandkey "g">
+<!ENTITY findAgainCmd.accesskey "s">
+<!ENTITY findAgainCmd.commandkey "s">
 <!ENTITY findAgainCmd.commandkey2 "VK_F3">
 <!ENTITY findSelectionCmd.commandkey "e">
 

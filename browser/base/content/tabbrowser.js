@@ -3700,26 +3700,15 @@ window._gBrowser = {
     // Don't check if the event was already consumed because tab
     // navigation should always work for better user experience.
 
-    if (aEvent.ctrlKey && aEvent.shiftKey && !aEvent.metaKey) {
-      switch (aEvent.keyCode) {
-        case aEvent.DOM_VK_PAGE_UP:
-          this.moveTabBackward();
-          aEvent.preventDefault();
-          return;
-        case aEvent.DOM_VK_PAGE_DOWN:
-          this.moveTabForward();
-          aEvent.preventDefault();
-          return;
-      }
-    }
-
-    if (AppConstants.platform != "macosx") {
-      if (aEvent.ctrlKey && !aEvent.shiftKey && !aEvent.metaKey &&
-          aEvent.keyCode == KeyEvent.DOM_VK_F4 &&
-          !this.selectedTab.pinned) {
+    if (aEvent.ctrlKey && !aEvent.metaKey &&
+        aEvent.keyCode == KeyEvent.DOM_VK_BACK_SPACE /* &&
+        !this.selectedTab.pinned */) {
+      if (aEvent.shiftKey) {
+          SessionStore.undoCloseTab(window, 0);
+      } else {
         this.removeCurrentTab({ animate: true });
-        aEvent.preventDefault();
       }
+      aEvent.preventDefault();
     }
   },
 

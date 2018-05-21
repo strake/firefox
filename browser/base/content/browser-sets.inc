@@ -261,13 +261,8 @@
 
     <key keycode="VK_BACK" command="cmd_handleBackspace"/>
     <key keycode="VK_BACK" command="cmd_handleShiftBackspace" modifiers="shift"/>
-#ifndef XP_MACOSX
-    <key id="goBackKb"  keycode="VK_LEFT" command="Browser:Back" modifiers="alt"/>
-    <key id="goForwardKb"  keycode="VK_RIGHT" command="Browser:Forward" modifiers="alt"/>
-#else
-    <key id="goBackKb" keycode="VK_LEFT" command="Browser:Back" modifiers="accel" />
-    <key id="goForwardKb" keycode="VK_RIGHT" command="Browser:Forward" modifiers="accel" />
-#endif
+    <key id="goBackKb"  keycode="VK_COMMA" command="Browser:Back" modifiers="ctrl"/>
+    <key id="goForwardKb"  keycode="VK_PERIOD" command="Browser:Forward" modifiers="ctrl"/>
 #ifdef XP_UNIX
     <key id="goBackKb2" key="&goBackCmd.commandKey;" command="Browser:Back" modifiers="accel"/>
     <key id="goForwardKb2" key="&goForwardCmd.commandKey;" command="Browser:Forward" modifiers="accel"/>
