@@ -45,7 +45,9 @@
 #include "nsIStreamConverterService.h"
 #include "nsCRT.h"
 #include "nsIMemoryReporter.h"
+#ifndef MOZ_DISABLE_PARENTAL_CONTROLS
 #include "nsIParentalControlsService.h"
+#endif
 #include "nsPIDOMWindow.h"
 #include "nsINetworkLinkService.h"
 #include "nsHttpChannelAuthProvider.h"
@@ -572,10 +574,12 @@ nsHttpHandler::Init()
     if (NS_FAILED(mWifiTickler->Init()))
         mWifiTickler = nullptr;
 
+#ifndef MOZ_DISABLE_PARENTAL_CONTROLS
     nsCOMPtr<nsIParentalControlsService> pc = do_CreateInstance("@mozilla.org/parental-controls-service;1");
     if (pc) {
         pc->GetParentalControlsEnabled(&mParentalControlEnabled);
     }
+#endif MOZ_DISABLE_PARENTAL_CONTROLS
     return NS_OK;
 }
 
