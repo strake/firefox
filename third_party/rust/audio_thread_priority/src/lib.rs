@@ -64,7 +64,7 @@ cfg_if! {
         use rt_win::promote_current_thread_to_real_time_internal;
         use rt_win::demote_current_thread_from_real_time_internal;
         use rt_win::RtPriorityHandleInternal;
-    } else if #[cfg(target_os = "linux")] {
+    } else if #[cfg(all(target_os = "linux", feature = "dbus"))] {
         mod rt_linux;
         extern crate dbus;
         extern crate libc;

@@ -11,7 +11,7 @@ use std::cmp;
 use std::error::Error;
 use std::io::Error as OSError;
 
-use dbus::{Connection, BusType, Props, MessageItem, Message};
+//use dbus::{Connection, BusType, Props, MessageItem, Message};
 
 use crate::AudioThreadPriorityError;
 

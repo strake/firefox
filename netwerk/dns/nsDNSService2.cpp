@@ -1298,14 +1298,6 @@ nsDNSService::ClearCache(bool aTrrToo) {
   return NS_OK;
 }
 
-NS_IMETHODIMP
-nsDNSService::ReloadParentalControlEnabled() {
-  if (mTrrService) {
-    mTrrService->GetParentalControlEnabledInternal();
-  }
-  return NS_OK;
-}
-
 size_t nsDNSService::SizeOfIncludingThis(
     mozilla::MallocSizeOf mallocSizeOf) const {
   // Measurement of the following members may be added later if DMD finds it

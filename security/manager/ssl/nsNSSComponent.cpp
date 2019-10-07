@@ -347,145 +347,7 @@ static nsresult ReadRegKeyValueWithDefault(nsCOMPtr<nsIWindowsRegKey> regKey,
   }
   return NS_OK;
 }
-
-static nsresult AccountHasFamilySafetyEnabled(bool& enabled) {
-  enabled = false;
-  MOZ_LOG(gPIPNSSLog, LogLevel::Debug, ("AccountHasFamilySafetyEnabled?"));
-  nsCOMPtr<nsIWindowsRegKey> parentalControlsKey(
-      do_CreateInstance("@mozilla.org/windows-registry-key;1"));
-  if (!parentalControlsKey) {
-    MOZ_LOG(gPIPNSSLog, LogLevel::Debug, ("couldn't create nsIWindowsRegKey"));
-    return NS_ERROR_FAILURE;
-  }
-  uint32_t flags = nsIWindowsRegKey::ACCESS_READ | nsIWindowsRegKey::WOW64_64;
-  NS_NAMED_LITERAL_STRING(
-      familySafetyPath,
-      "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Parental Controls");
-  nsresult rv = parentalControlsKey->Open(
-      nsIWindowsRegKey::ROOT_KEY_LOCAL_MACHINE, familySafetyPath, flags);
-  if (NS_FAILED(rv)) {
-    MOZ_LOG(gPIPNSSLog, LogLevel::Debug, ("couldn't open parentalControlsKey"));
-    return rv;
-  }
-  NS_NAMED_LITERAL_STRING(usersString, "Users");
-  bool hasUsers;
-  rv = parentalControlsKey->HasChild(usersString, &hasUsers);
-  if (NS_FAILED(rv)) {
-    MOZ_LOG(gPIPNSSLog, LogLevel::Debug, ("HasChild(Users) failed"));
-    return rv;
-  }
-  if (!hasUsers) {
-    MOZ_LOG(gPIPNSSLog, LogLevel::Debug,
-            ("Users subkey not present - Parental Controls not enabled"));
-    return NS_OK;
-  }
-  nsCOMPtr<nsIWindowsRegKey> usersKey;
-  rv = parentalControlsKey->OpenChild(usersString, flags,
-                                      getter_AddRefs(usersKey));
-  if (NS_FAILED(rv)) {
-    MOZ_LOG(gPIPNSSLog, LogLevel::Debug, ("failed to open Users subkey"));
-    return rv;
-  }
-  nsAutoString sid;
-  if (!GetUserSid(sid)) {
-    MOZ_LOG(gPIPNSSLog, LogLevel::Debug, ("couldn't get sid"));
-    return NS_ERROR_FAILURE;
-  }
-  MOZ_LOG(gPIPNSSLog, LogLevel::Debug, ("our sid is '%S'", sid.get()));
-  bool hasSid;
-  rv = usersKey->HasChild(sid, &hasSid);
-  if (NS_FAILED(rv)) {
-    MOZ_LOG(gPIPNSSLog, LogLevel::Debug, ("HasChild(sid) failed"));
-    return rv;
-  }
-  if (!hasSid) {
-    MOZ_LOG(gPIPNSSLog, LogLevel::Debug,
-            ("sid not present in Family Safety Users"));
-    return NS_OK;
-  }
-  nsCOMPtr<nsIWindowsRegKey> sidKey;
-  rv = usersKey->OpenChild(sid, flags, getter_AddRefs(sidKey));
-  if (NS_FAILED(rv)) {
-    MOZ_LOG(gPIPNSSLog, LogLevel::Debug, ("couldn't open sid key"));
-    return rv;
-  }
-  // There are three keys we're interested in: "Parental Controls On",
-  // "Logging Required", and "Web\\Filter On". These keys will have value 0
-  // or 1, indicating a particular feature is disabled or enabled,
-  // respectively. So, if "Parental Controls On" is not 1, Family Safety is
-  // disabled and we don't care about anything else. If both "Logging
-  // Required" and "Web\\Filter On" are 0, the proxy will not be running,
-  // so for our purposes we can consider Family Safety disabled in that
-  // case.
-  // By default, "Logging Required" is 1 and "Web\\Filter On" is 0,
-  // reflecting the initial settings when Family Safety is enabled for an
-  // account for the first time, However, these sub-keys are not created
-  // unless they are switched away from the default value.
-  uint32_t parentalControlsOn;
-  rv = sidKey->ReadIntValue(NS_LITERAL_STRING("Parental Controls On"),
-                            &parentalControlsOn);
-  if (NS_FAILED(rv)) {
-    MOZ_LOG(gPIPNSSLog, LogLevel::Debug,
-            ("couldn't read Parental Controls On"));
-    return rv;
-  }
-  MOZ_LOG(gPIPNSSLog, LogLevel::Debug,
-          ("Parental Controls On: %u", parentalControlsOn));
-  if (parentalControlsOn != 1) {
-    return NS_OK;
-  }
-  uint32_t loggingRequired;
-  rv = ReadRegKeyValueWithDefault(sidKey, flags, nullptr, L"Logging Required",
-                                  1, loggingRequired);
-  if (NS_FAILED(rv)) {
-    MOZ_LOG(gPIPNSSLog, LogLevel::Debug,
-            ("failed to read value of Logging Required"));
-    return rv;
-  }
-  MOZ_LOG(gPIPNSSLog, LogLevel::Debug,
-          ("Logging Required: %u", loggingRequired));
-  uint32_t webFilterOn;
-  rv = ReadRegKeyValueWithDefault(sidKey, flags, L"Web", L"Filter On", 0,
-                                  webFilterOn);
-  if (NS_FAILED(rv)) {
-    MOZ_LOG(gPIPNSSLog, LogLevel::Debug,
-            ("failed to read value of Web\\Filter On"));
-    return rv;
-  }
-  MOZ_LOG(gPIPNSSLog, LogLevel::Debug, ("Web\\Filter On: %u", webFilterOn));
-  enabled = loggingRequired == 1 || webFilterOn == 1;
-  return NS_OK;
-}
 #endif  // XP_WIN
-
-// On Windows 8.1, if the following preference is 2, we will attempt to detect
-// if the Family Safety TLS interception feature has been enabled. If so, we
-// will behave as if the enterprise roots feature has been enabled (i.e. import
-// and trust third party root certificates from the OS).
-// With any other value of the pref or on any other platform, this does nothing.
-// This preference takes precedence over "security.enterprise_roots.enabled".
-const char* kFamilySafetyModePref = "security.family_safety.mode";
-const uint32_t kFamilySafetyModeDefault = 0;
-
-bool nsNSSComponent::ShouldEnableEnterpriseRootsForFamilySafety(
-    uint32_t familySafetyMode) {
-#ifdef XP_WIN
-  if (!(IsWin8Point1OrLater() && !IsWin10OrLater())) {
-    return false;
-  }
-  if (familySafetyMode != 2) {
-    return false;
-  }
-  bool familySafetyEnabled;
-  nsresult rv = AccountHasFamilySafetyEnabled(familySafetyEnabled);
-  if (NS_FAILED(rv)) {
-    return false;
-  }
-  return familySafetyEnabled;
-#else
-  return false;
-#endif  // XP_WIN
-}
 
 void nsNSSComponent::UnloadEnterpriseRoots() {
   MOZ_ASSERT(NS_IsMainThread());
@@ -533,13 +395,6 @@ void nsNSSComponent::MaybeImportEnterpriseRoots() {
   }
   bool importEnterpriseRoots =
       Preferences::GetBool(kEnterpriseRootModePref, false);
-  uint32_t familySafetyMode =
-      Preferences::GetUint(kFamilySafetyModePref, kFamilySafetyModeDefault);
-  // If we've been configured to detect the Family Safety TLS interception
-  // feature, see if it's enabled. If so, we want to import enterprise roots.
-  if (ShouldEnableEnterpriseRootsForFamilySafety(familySafetyMode)) {
-    importEnterpriseRoots = true;
-  }
   if (importEnterpriseRoots) {
     RefPtr<BackgroundImportEnterpriseCertsTask> task =
         new BackgroundImportEnterpriseCertsTask(this);
@@ -603,13 +458,12 @@ nsNSSComponent::GetEnterpriseIntermediates(
 class LoadLoadableCertsTask final : public Runnable {
  public:
   LoadLoadableCertsTask(nsNSSComponent* nssComponent,
-                        bool importEnterpriseRoots, uint32_t familySafetyMode,
+                        bool importEnterpriseRoots,
                         Vector<nsCString>&& possibleLoadableRootsLocations,
                         Maybe<nsCString>&& osClientCertsModuleLocation)
       : Runnable("LoadLoadableCertsTask"),
         mNSSComponent(nssComponent),
         mImportEnterpriseRoots(importEnterpriseRoots),
-        mFamilySafetyMode(familySafetyMode),
         mPossibleLoadableRootsLocations(
             std::move(possibleLoadableRootsLocations)),
         mOSClientCertsModuleLocation(std::move(osClientCertsModuleLocation)) {
@@ -625,7 +479,6 @@ class LoadLoadableCertsTask final : public Runnable {
   nsresult LoadLoadableRoots();
   RefPtr<nsNSSComponent> mNSSComponent;
   bool mImportEnterpriseRoots;
-  uint32_t mFamilySafetyMode;
   Vector<nsCString> mPossibleLoadableRootsLocations;
   Maybe<nsCString> mOSClientCertsModuleLocation;
 };
@@ -663,12 +516,6 @@ LoadLoadableCertsTask::Run() {
     }
   }
 
-  // If we've been configured to detect the Family Safety TLS interception
-  // feature, see if it's enabled. If so, we want to import enterprise roots.
-  if (mNSSComponent->ShouldEnableEnterpriseRootsForFamilySafety(
-          mFamilySafetyMode)) {
-    mImportEnterpriseRoots = true;
-  }
   if (mImportEnterpriseRoots) {
     mNSSComponent->ImportEnterpriseRoots();
     mNSSComponent->UpdateCertVerifierWithEnterpriseRoots();
@@ -1998,8 +1845,6 @@ nsresult nsNSSComponent::InitializeNSS() {
 
     bool importEnterpriseRoots =
         Preferences::GetBool(kEnterpriseRootModePref, false);
-    uint32_t familySafetyMode =
-        Preferences::GetUint(kFamilySafetyModePref, kFamilySafetyModeDefault);
     Vector<nsCString> possibleLoadableRootsLocations;
     rv = ListPossibleLoadableRootsLocations(possibleLoadableRootsLocations);
     MOZ_DIAGNOSTIC_ASSERT(NS_SUCCEEDED(rv));
@@ -2017,7 +1862,7 @@ nsresult nsNSSComponent::InitializeNSS() {
       }
     }
     RefPtr<LoadLoadableCertsTask> loadLoadableCertsTask(
-        new LoadLoadableCertsTask(this, importEnterpriseRoots, familySafetyMode,
+        new LoadLoadableCertsTask(this, importEnterpriseRoots,
                                   std::move(possibleLoadableRootsLocations),
                                   std::move(maybeOSClientCertsModuleLocation)));
     rv = loadLoadableCertsTask->Dispatch();
@@ -2144,8 +1989,7 @@ nsNSSComponent::Observe(nsISupports* aSubject, const char* aTopic,
       mContentSigningRootHash.Truncate();
       Preferences::GetString("security.content.signature.root_hash",
                              mContentSigningRootHash);
-    } else if (prefName.Equals(kEnterpriseRootModePref) ||
-               prefName.Equals(kFamilySafetyModePref)) {
+    } else if (prefName.Equals(kEnterpriseRootModePref)) {
       UnloadEnterpriseRoots();
       MaybeImportEnterpriseRoots();
     } else if (prefName.Equals(kOSClientCertsModulePref)) {

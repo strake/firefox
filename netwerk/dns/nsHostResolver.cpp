@@ -1464,9 +1464,7 @@ nsresult nsHostResolver::NameLookup(nsHostRecord* rec) {
 
   if (!rec->mTrrServer.IsEmpty()) {
     LOG(("NameLookup: %s use trr:%s", rec->host.get(), rec->mTrrServer.get()));
-    if (gTRRService->IsExcludedFromTRR(rec->host) ||
-        (gTRRService->SkipTRRWhenParentalControlEnabled() &&
-         gTRRService->ParentalControlEnabled())) {
+    if (gTRRService->IsExcludedFromTRR(rec->host)) {
       return NS_ERROR_UNKNOWN_HOST;
     }
     return TrrLookup(rec);

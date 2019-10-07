@@ -40,7 +40,7 @@
 #include "nsISiteSecurityService.h"
 #include "nsIStreamConverterService.h"
 #include "nsCRT.h"
-#include "nsIParentalControlsService.h"
+#include "nsIMemoryReporter.h"
 #include "nsPIDOMWindow.h"
 #include "nsHttpChannelAuthProvider.h"
 #include "nsINetworkLinkService.h"
@@ -106,7 +106,6 @@
 #define INTL_ACCEPT_LANGUAGES "intl.accept_languages"
 #define BROWSER_PREF_PREFIX "browser.cache."
 #define H2MANDATORY_SUITE "security.ssl3.ecdhe_rsa_aes_128_gcm_sha256"
-#define SAFE_HINT_HEADER_VALUE "safeHint.enabled"
 #define SECURITY_PREFIX "security."
 #define DOM_SECURITY_PREFIX "dom.security"
 #define TCP_FAST_OPEN_ENABLE "network.tcp.tcp_fastopen_enable"
@@ -236,8 +235,6 @@ nsHttpHandler::nsHttpHandler()
       mAcceptLanguagesIsDirty(true),
       mPromptTempRedirect(true),
       mEnablePersistentHttpsCaching(false),
-      mSafeHintEnabled(false),
-      mParentalControlEnabled(false),
       mHandlerActive(false),
       mDebugObservations(false),
       mEnableSpdy(false),
@@ -415,7 +412,6 @@ static const char* gCallbackPrefs[] = {
     H2MANDATORY_SUITE,
     HTTP_PREF("tcp_keepalive.short_lived_connections"),
     HTTP_PREF("tcp_keepalive.long_lived_connections"),
-    SAFE_HINT_HEADER_VALUE,
     SECURITY_PREFIX,
     DOM_SECURITY_PREFIX,
     TCP_FAST_OPEN_ENABLE,
@@ -560,11 +556,6 @@ nsresult nsHttpHandler::Init() {
   mWifiTickler = new Tickler();
   if (NS_FAILED(mWifiTickler->Init())) mWifiTickler = nullptr;
 
-  nsCOMPtr<nsIParentalControlsService> pc =
-      do_CreateInstance("@mozilla.org/parental-controls-service;1");
-  if (pc) {
-    pc->GetParentalControlsEnabled(&mParentalControlEnabled);
-  }
   return NS_OK;
 }
 
@@ -674,13 +665,6 @@ nsresult nsHttpHandler::AddStandardRequestHeaders(
                             false, nsHttpHeaderArray::eVarietyRequestDefault);
   }
   if (NS_FAILED(rv)) return rv;
-
-  // add the "Send Hint" header
-  if (mSafeHintEnabled || mParentalControlEnabled) {
-    rv = request->SetHeader(nsHttp::Prefer, NS_LITERAL_CSTRING("safe"), false,
-                            nsHttpHeaderArray::eVarietyRequestDefault);
-    if (NS_FAILED(rv)) return rv;
-  }
   return NS_OK;
 }
 
@@ -1727,15 +1711,6 @@ void nsHttpHandler::PrefsChanged(const char* pref) {
   //
   // Tracking options
   //
-
-  // Hint option
-  if (PREF_CHANGED(SAFE_HINT_HEADER_VALUE)) {
-    cVar = false;
-    rv = Preferences::GetBool(SAFE_HINT_HEADER_VALUE, &cVar);
-    if (NS_SUCCEEDED(rv)) {
-      mSafeHintEnabled = cVar;
-    }
-  }
 
   // toggle to true anytime a token bucket related pref is changed.. that
   // includes telemetry and allow-experiments because of the abtest profile

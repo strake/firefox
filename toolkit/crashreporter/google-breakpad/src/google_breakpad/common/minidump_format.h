@@ -553,7 +553,6 @@ typedef struct {
 #include "minidump_exception_mac.h"
 #include "minidump_exception_ps3.h"
 #include "minidump_exception_solaris.h"
-#include "minidump_exception_win32.h"
 
 typedef struct {
   uint32_t             thread_id;         /* Thread in which the exception

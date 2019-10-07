@@ -81,3 +81,9 @@ rev = "98c818c129979e98a3db150f8f9698f6451b7ef7"
 [patch.crates-io.cranelift-wasm]
 git = "https://github.com/bytecodealliance/cranelift"
 rev = "98c818c129979e98a3db150f8f9698f6451b7ef7"
+
+#[patch.crates-io.coreaudio-sys]
+#path = "third_party/rust/coreaudio-sys"
+
+#[patch.crates-io.audio_thread_priority]
+#path = "third_party/rust/audio_thread_priority"

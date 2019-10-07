@@ -156,12 +156,6 @@ if CONFIG['MOZ_INSTRUMENT_EVENT_LOOP']:
         'EventTracer.cpp',
     ]
 
-if CONFIG['MOZ_UPDATER']:
-    if CONFIG['MOZ_WIDGET_TOOLKIT'] != 'android':
-        UNIFIED_SOURCES += [
-            'nsUpdateDriver.cpp',
-        ]
-
 if CONFIG['MOZ_PDF_PRINTING']:
     DEFINES['PROXY_PRINTING'] = 1
     LOCAL_INCLUDES += [

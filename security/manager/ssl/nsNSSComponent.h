@@ -99,8 +99,6 @@ class nsNSSComponent final : public nsINSSComponent, public nsIObserver {
   nsresult CommonGetEnterpriseCerts(
       nsTArray<nsTArray<uint8_t>>& enterpriseCerts, bool getRoots);
 
-  bool ShouldEnableEnterpriseRootsForFamilySafety(uint32_t familySafetyMode);
-
   // mLoadableCertsLoadedMonitor protects mLoadableCertsLoaded.
   mozilla::Monitor mLoadableCertsLoadedMonitor;
   bool mLoadableCertsLoaded;
