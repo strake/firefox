@@ -34,6 +34,7 @@ from mozboot.gentoo import GentooBootstrapper
 from mozboot.osx import OSXBootstrapper
 from mozboot.openbsd import OpenBSDBootstrapper
 from mozboot.archlinux import ArchlinuxBootstrapper
+from mozboot.voidlinux import VoidlinuxBootstrapper
 from mozboot.solus import SolusBootstrapper
 from mozboot.windows import WindowsBootstrapper
 from mozboot.mozillabuild import MozillaBuildBootstrapper
@@ -270,12 +271,9 @@ class Bootstrapper(object):
                 cls = GentooBootstrapper
             elif distro in ('Solus'):
                 cls = SolusBootstrapper
-            elif os.path.exists('/etc/arch-release'):
-                # Even on archlinux, platform.linux_distribution() returns ['','','']
-                cls = ArchlinuxBootstrapper
             else:
-                raise NotImplementedError('Bootstrap support for this Linux '
-                                          'distro not yet available: ' + distro)
+                # Even on archlinux, platform.linux_distribution() returns ['','','']
+                cls = VoidlinuxBootstrapper
 
             args['version'] = version
             args['dist_id'] = dist_id

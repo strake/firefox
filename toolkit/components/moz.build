@@ -47,7 +47,6 @@ DIRS += [
     'mozintl',
     'mozprotocol',
     'osfile',
-    'parentalcontrols',
     'passwordmgr',
     'perfmonitoring',
     'pictureinpicture',

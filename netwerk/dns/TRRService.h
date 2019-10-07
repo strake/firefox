@@ -60,7 +60,6 @@ class TRRService : public nsIObserver,
   bool MaybeBootstrap(const nsACString& possible, nsACString& result);
   enum TrrOkay { OKAY_NORMAL = 0, OKAY_TIMEOUT = 1, OKAY_BAD = 2 };
   void TRRIsOkay(enum TrrOkay aReason);
-  bool ParentalControlEnabled() const { return mParentalControlEnabled; }
 
  private:
   virtual ~TRRService();
@@ -69,7 +68,6 @@ class TRRService : public nsIObserver,
   void MaybeConfirm();
   void MaybeConfirm_locked();
   friend class ::nsDNSService;
-  void GetParentalControlEnabledInternal();
 
   bool mInitialized;
   Atomic<uint32_t, Relaxed> mMode;
@@ -118,7 +116,6 @@ class TRRService : public nsIObserver,
   nsCOMPtr<nsITimer> mRetryConfirmTimer;
   uint32_t mRetryConfirmInterval;  // milliseconds until retry
   Atomic<uint32_t, Relaxed> mTRRFailures;
-  bool mParentalControlEnabled;
 };
 
 extern TRRService* gTRRService;

@@ -4,7 +4,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "nsICaptivePortalService.h"
-#include "nsIParentalControlsService.h"
 #include "nsIObserverService.h"
 #include "nsIURIMutator.h"
 #include "nsNetUtil.h"
@@ -51,8 +50,7 @@ TRRService::TRRService()
       mClearTRRBLStorage(false),
       mConfirmationState(CONFIRM_INIT),
       mRetryConfirmInterval(1000),
-      mTRRFailures(0),
-      mParentalControlEnabled(false) {
+      mTRRFailures(0) {
   MOZ_ASSERT(NS_IsMainThread(), "wrong thread");
 }
 
@@ -92,24 +90,12 @@ nsresult TRRService::Init() {
          captiveState, (int)mCaptiveIsPassed));
   }
 
-  GetParentalControlEnabledInternal();
-
   ReadPrefs(nullptr);
 
   gTRRService = this;
 
   LOG(("Initialized TRRService\n"));
   return NS_OK;
-}
-
-void TRRService::GetParentalControlEnabledInternal() {
-  nsCOMPtr<nsIParentalControlsService> pc =
-      do_CreateInstance("@mozilla.org/parental-controls-service;1");
-  if (pc) {
-    pc->GetParentalControlsEnabled(&mParentalControlEnabled);
-    LOG(("TRRService::GetParentalControlEnabledInternal=%d\n",
-         mParentalControlEnabled));
-  }
 }
 
 bool TRRService::Enabled() {

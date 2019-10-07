@@ -10,7 +10,7 @@ extern crate libc;
 use std::cmp;
 use std::error::Error;
 
-use dbus::{Connection, BusType, Props, MessageItem, Message};
+//use dbus::{Connection, BusType, Props, MessageItem, Message};
 
 const DBUS_SOCKET_TIMEOUT: i32 = 10_000;
 const RT_PRIO_DEFAULT: u32 = 10;

@@ -72,3 +72,6 @@ rev = "182414f15c18538dfebbe040469ec8001e93ecc5"
 
 [patch.crates-io.coreaudio-sys]
 path = "third_party/rust/coreaudio-sys"
+
+[patch.crates-io.audio_thread_priority]
+path = "third_party/rust/audio_thread_priority"
