@@ -355,7 +355,7 @@ convenience of Safari and Chrome users on macOS. See bug 1398988. -->
     secondary commands. -->
 <!ENTITY moreMenu.label "More">
 
-<!ENTITY openCmd.commandkey           "l">
+<!ENTITY openCmd.commandkey           "g">
 <!ENTITY urlbar.placeholder2          "Search or enter address">
 <!ENTITY urlbar.accesskey             "d">
 <!-- LOCALIZATION NOTE (urlbar.extension.label): Used to indicate that a selected autocomplete entry is provided by an extension. -->
@@ -592,7 +592,7 @@ you can use these alternative items. Otherwise, their values should be empty.  -
 <!ENTITY quitApplicationCmdMac2.label   "Quit &brandShorterName;">
 <!ENTITY quitApplicationCmd.key         "Q">
 
-<!ENTITY closeCmd.key                   "W">
+<!ENTITY closeCmd.key                   "\b">
 
 <!ENTITY toggleMuteCmd.key              "M">
 
@@ -612,8 +612,8 @@ you can use these alternative items. Otherwise, their values should be empty.  -
 <!ENTITY bidiSwitchTextDirectionItem.commandkey   "X">
 
 <!ENTITY findOnCmd.label     "Find in This Page…">
-<!ENTITY findOnCmd.commandkey "f">
-<!ENTITY findAgainCmd.commandkey "g">
+<!ENTITY findOnCmd.commandkey "/">
+<!ENTITY findAgainCmd.commandkey "s">
 <!ENTITY findAgainCmd.commandkey2 "VK_F3">
 <!ENTITY findSelectionCmd.commandkey "e">
 

@@ -158,10 +158,9 @@
 #endif
     <key id="key_openAddons" key="&addons.commandkey;" command="Tools:Addons" modifiers="accel,shift"/>
     <key id="openFileKb" key="&openFileCmd.commandkey;" command="Browser:OpenFile"  modifiers="accel"/>
-    <key id="key_savePage" key="&savePageCmd.commandkey;" command="Browser:SavePage" modifiers="accel"/>
+#    <key id="key_savePage" key="&savePageCmd.commandkey;" command="Browser:SavePage" modifiers="accel"/>
     <key id="printKb" key="&printCmd.commandkey;" command="cmd_print"  modifiers="accel"/>
-    <key id="key_close" key="&closeCmd.key;" command="cmd_close" modifiers="accel" reserved="true"/>
-    <key id="key_closeWindow" key="&closeCmd.key;" command="cmd_closeWindow" modifiers="accel,shift" reserved="true"/>
+    <key id="key_close" keycode="VK_BACK" command="cmd_close" modifiers="accel" reserved="true"/>
     <key id="key_toggleMute" key="&toggleMuteCmd.key;" command="cmd_toggleMute" modifiers="control"/>
     <key id="key_undo"
          key="&undoCmd.key;"
@@ -183,19 +182,8 @@
     <key id="key_delete" keycode="VK_DELETE" command="cmd_delete"/>
     <key id="key_selectAll" key="&selectAllCmd.key;" modifiers="accel"/>
 
-    <key keycode="VK_BACK" command="cmd_handleBackspace" reserved="false"/>
-    <key keycode="VK_BACK" command="cmd_handleShiftBackspace" modifiers="shift" reserved="false"/>
-#ifndef XP_MACOSX
-    <key id="goBackKb"  keycode="VK_LEFT" command="Browser:Back" modifiers="alt"/>
-    <key id="goForwardKb"  keycode="VK_RIGHT" command="Browser:Forward" modifiers="alt"/>
-#else
-    <key id="goBackKb" keycode="VK_LEFT" command="Browser:Back" modifiers="accel" />
-    <key id="goForwardKb" keycode="VK_RIGHT" command="Browser:Forward" modifiers="accel" />
-#endif
-#ifdef XP_UNIX
-    <key id="goBackKb2" key="&goBackCmd.commandKey;" command="Browser:Back" modifiers="accel"/>
-    <key id="goForwardKb2" key="&goForwardCmd.commandKey;" command="Browser:Forward" modifiers="accel"/>
-#endif
+    <key id="goBackKb"  key="," command="Browser:Back" modifiers="accel"/>
+    <key id="goForwardKb"  key="." command="Browser:Forward" modifiers="accel"/>
     <key id="goHome" keycode="VK_HOME" oncommand="BrowserHome();" modifiers="alt"/>
     <key keycode="VK_F5" command="Browser:Reload"/>
 #ifndef XP_MACOSX
@@ -298,8 +286,8 @@
 #endif
          reserved="true"/>
 
-    <key id="key_undoCloseTab" command="History:UndoCloseTab" key="&tabCmd.commandkey;" modifiers="accel,shift"/>
-    <key id="key_undoCloseWindow" command="History:UndoCloseWindow" key="&newNavigatorCmd.key;" modifiers="accel,shift"/>
+    <key id="key_undoCloseTab" command="History:UndoCloseTab" keycode="VK_BACK" modifiers="accel,shift"/>
+    <key id="key_undoCloseWindow" command="History:UndoCloseWindow" key="n" modifiers="accel,shift"/>
 
 #ifdef XP_GNOME
 #define NUM_SELECT_TAB_MODIFIER alt
