@@ -15,16 +15,16 @@ window-minimize-shortcut =
     .key = M
 
 close-shortcut =
-    .key = W
+    .key = VK_BACK
 
 tab-new-shortcut =
     .key = T
 
 location-open-shortcut =
-    .key = L
+    .key = G
 
-location-open-shortcut-alt =
-    .key = D
+#location-open-shortcut-alt =
+#    .key = D
 
 search-focus-shortcut =
     .key = K
@@ -33,13 +33,13 @@ search-focus-shortcut =
 #   - web search
 #   - find in page
 find-shortcut =
-    .key = F
+    .key = /
 
 search-find-again-shortcut =
-    .key = G
+    .key = S
 
-search-find-again-shortcut-alt =
-    .keycode = VK_F3
+#search-find-again-shortcut-alt =
+#    .keycode = VK_F3
 
 search-find-selection-shortcut =
     .key = E
@@ -68,8 +68,8 @@ addons-shortcut =
 file-open-shortcut =
     .key = O
 
-save-page-shortcut =
-    .key = S
+#save-page-shortcut =
+#    .key = S
 
 page-source-shortcut =
     .key = U
@@ -92,17 +92,16 @@ mute-toggle-shortcut =
     .key = M
 
 nav-back-shortcut-alt =
-    .key = [
+    .key = .
 
 nav-fwd-shortcut-alt =
-    .key = ]
+    .key = ,
 
 nav-reload-shortcut =
     .key = R
 
-# Shortcut available only on macOS.
-nav-stop-shortcut =
-    .key = .
+#nav-stop-shortcut =
+#    .key = 
 
 history-show-all-shortcut =
     .key = H
@@ -110,8 +109,8 @@ history-show-all-shortcut =
 history-sidebar-shortcut =
     .key = H
 
-full-screen-shortcut =
-    .key = F
+#full-screen-shortcut =
+#    .key = F
 
 reader-mode-toggle-shortcut-windows =
     .keycode = VK_F9
@@ -119,8 +118,8 @@ reader-mode-toggle-shortcut-windows =
 reader-mode-toggle-shortcut-other =
     .key = R
 
-picture-in-picture-toggle-shortcut =
-    .key = ]
+#picture-in-picture-toggle-shortcut =
+#    .key = ]
 
 # Pick the key that is commonly present
 # in your locale keyboards above the
@@ -184,8 +183,8 @@ private-browsing-shortcut =
 ## The shortcuts below are for Mac specific
 ## global menu.
 
-quit-app-shortcut =
-    .key = Q
+#quit-app-shortcut =
+#    .key = Q
 
 help-shortcut =
     .key = ?
