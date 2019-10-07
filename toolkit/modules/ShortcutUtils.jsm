@@ -316,6 +316,7 @@ var ShortcutUtils = {
   // eslint-disable-next-line complexity
   getSystemActionForEvent(event, { rtl } = {}) {
     switch (event.keyCode) {
+/*
       case event.DOM_VK_TAB:
         if (event.ctrlKey && !event.altKey && !event.metaKey) {
           return ShortcutUtils.CYCLE_TABS;
@@ -327,7 +328,8 @@ var ShortcutUtils = {
           return ShortcutUtils.TOGGLE_CARET_BROWSING;
         }
         break;
-      case event.DOM_VK_PAGE_UP:
+*/
+      case event.DOM_VK_OPEN_BRACKET:
         if (
           event.ctrlKey &&
           !event.shiftKey &&
@@ -345,7 +347,7 @@ var ShortcutUtils = {
           return ShortcutUtils.MOVE_TAB_BACKWARD;
         }
         break;
-      case event.DOM_VK_PAGE_DOWN:
+      case event.DOM_VK_CLOSE_BRACKET:
         if (
           event.ctrlKey &&
           !event.shiftKey &&
@@ -363,6 +365,7 @@ var ShortcutUtils = {
           return ShortcutUtils.MOVE_TAB_FORWARD;
         }
         break;
+/*
       case event.DOM_VK_LEFT:
         if (
           event.metaKey &&
@@ -383,6 +386,7 @@ var ShortcutUtils = {
           return ShortcutUtils.NEXT_TAB;
         }
         break;
+*/
     }
 
     if (AppConstants.platform == "macosx") {

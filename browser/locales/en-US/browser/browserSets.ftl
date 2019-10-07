@@ -11,68 +11,67 @@ window-zoom-command =
 window-new-shortcut =
     .key = N
 
-window-minimize-shortcut =
-    .key = M
+window-minimize-shortcut = {}
+#    .key = M
 
 close-shortcut =
-    .key = W
+    .keycode = VK_BACK
 
 tab-new-shortcut =
     .key = T
 
 location-open-shortcut =
-    .key = L
+    .key = G
 
-location-open-shortcut-alt =
-    .key = D
+location-open-shortcut-alt = {}
 
-search-focus-shortcut =
-    .key = K
+search-focus-shortcut = {}
+#    .key = K
 
 # This shortcut is used in two contexts:
 #   - web search
 #   - find in page
 find-shortcut =
-    .key = F
+    .key = /
 
 search-find-again-shortcut =
-    .key = G
+    .key = /
 
 search-find-again-shortcut-alt =
     .keycode = VK_F3
 
-search-find-selection-shortcut =
-    .key = E
+search-find-selection-shortcut = {}
+#    .key = E
 
 # Verify what shortcut for that operation
 # are recommended by the Human Interface Guidelines
 # of each platform for your locale.
-search-focus-shortcut-alt =
-    .key = { PLATFORM() ->
-        [linux] J
-       *[other] E
-    }
+search-focus-shortcut-alt = {}
+#    .key = { PLATFORM() ->
+#        [linux] J
+#       *[other] E
+#    }
 
 # Verify what shortcut for that operation
 # are recommended by the Human Interface Guidelines
 # of each platform for your locale.
-downloads-shortcut =
-    .key = { PLATFORM() ->
-        [linux] Y
-       *[other] J
-    }
+#downloads-shortcut = {}
+#    .key = { PLATFORM() ->
+#        [linux] Y
+#       *[other] J
+#    }
 
 addons-shortcut =
     .key = A
 
-file-open-shortcut =
-    .key = O
+file-open-shortcut = {}
+#    .key = O
 
-save-page-shortcut =
-    .key = S
+save-page-shortcut = {}
+#    .key = S
 
-page-source-shortcut =
-    .key = U
+page-source-shortcut = {}
+#    .key = U
 
 # This should match the Option+Command keyboard shortcut letter that Safari
 # and Chrome use for "View Source" on macOS. `page-source-shortcut` above
@@ -82,8 +81,8 @@ page-source-shortcut =
 page-source-shortcut-safari =
     .key = U
 
-page-info-shortcut =
-    .key = I
+page-info-shortcut = {}
+#    .key = I
 
 print-shortcut =
     .key = P
@@ -92,17 +91,17 @@ mute-toggle-shortcut =
     .key = M
 
 nav-back-shortcut-alt =
-    .key = [
+    .key = ,
 
 nav-fwd-shortcut-alt =
-    .key = ]
+    .key = .
 
-nav-reload-shortcut =
-    .key = R
+nav-reload-shortcut = {}
+#    .key = R
 
 # Shortcut available only on macOS.
-nav-stop-shortcut =
-    .key = .
+nav-stop-shortcut = {}
+#    .key = .
 
 history-show-all-shortcut =
     .key = H
@@ -110,8 +109,8 @@ history-show-all-shortcut =
 history-sidebar-shortcut =
     .key = H
 
-full-screen-shortcut =
-    .key = F
+full-screen-shortcut = {}
+#    .key = F
 
 reader-mode-toggle-shortcut-windows =
     .keycode = VK_F9
@@ -119,32 +118,32 @@ reader-mode-toggle-shortcut-windows =
 reader-mode-toggle-shortcut-other =
     .key = R
 
-picture-in-picture-toggle-shortcut =
-    .key = ]
+picture-in-picture-toggle-shortcut = {}
+#    .key = ]
 
 # Pick the key that is commonly present
 # in your locale keyboards above the
 # `picture-in-picture-toggle-shortcut` key.
-picture-in-picture-toggle-shortcut-alt =
-    .key = {"}"}
+picture-in-picture-toggle-shortcut-alt = {}
+#    .key = {"}"}
 
-bookmark-this-page-shortcut =
-    .key = D
-
-# Verify what shortcut for that operation
-# are recommended by the Human Interface Guidelines
-# of each platform for your locale.
-bookmark-show-all-shortcut =
-    .key = { PLATFORM() ->
-        [linux] O
-       *[other] B
-    }
+bookmark-this-page-shortcut = {}
+#    .key = D
 
 # Verify what shortcut for that operation
 # are recommended by the Human Interface Guidelines
 # of each platform for your locale.
-bookmark-show-sidebar-shortcut =
-    .key = B
+bookmark-show-all-shortcut = {}
+#    .key = { PLATFORM() ->
+#        [linux] O
+#       *[other] B
+#    }
+
+# Verify what shortcut for that operation
+# are recommended by the Human Interface Guidelines
+# of each platform for your locale.
+bookmark-show-sidebar-shortcut = {}
+#    .key = B
 
 ## All `-alt*` messages are alternative acceleration keys for zoom.
 ## If shift key is needed with your locale popular keyboard for them,
