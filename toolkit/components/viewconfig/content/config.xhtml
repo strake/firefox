@@ -11,7 +11,7 @@
 <window id="config"
         csp="default-src chrome:; object-src 'none'"
         data-l10n-id="config-window"
-        aria-describedby="warningTitle warningText"
+        aria-describedby=""
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
         xmlns:html="http://www.w3.org/1999/xhtml"
         windowtype="Preferences:ConfigManager"
@@ -50,22 +50,6 @@
   <key id="configFocuSearch2" modifiers="accel" data-l10n-id="config-focus-search-2"/>
 </keyset>
 <deck id="configDeck" flex="1">
-  <vbox id="warningScreen" flex="1" align="center" style="overflow: auto;">
-    <spacer flex="1"/>
-    <vbox id="warningBox" class="container">
-      <hbox class="title" flex="1">
-        <label id="warningTitle" data-l10n-id="config-about-warning-title" class="title-text" flex="1"></label>
-      </hbox>
-      <vbox class="description" flex="1">
-        <label id="warningText" data-l10n-id="config-about-warning-text"></label>
-        <checkbox id="showWarningNextTime" data-l10n-id="config-about-warning-checkbox" checked="true"/>
-        <hbox class="button-container">
-          <button id="warningButton" data-l10n-id="config-about-warning-button" class="primary"/>
-        </hbox>
-      </vbox>
-    </vbox>
-    <spacer flex="2"/>
-  </vbox>
   <vbox flex="1">
     <hbox id="filterRow" align="center">
       <label data-l10n-id="config-search-prefs" control="textbox"/>
