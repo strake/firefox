@@ -410,34 +410,16 @@ let gPrefObserver = {
   },
 };
 
-if (!Preferences.get("browser.aboutConfig.showWarning")) {
-  // When showing the filtered preferences directly, remove the warning elements
-  // immediately to prevent flickering, but wait to filter the preferences until
-  // the value of the textbox has been restored from previous sessions.
-  document.addEventListener("DOMContentLoaded", loadPrefs, { once: true });
-  window.addEventListener(
-    "load",
-    () => {
-      if (document.getElementById("about-config-search").value) {
-        filterPrefs();
-      }
-    },
-    { once: true }
-  );
-} else {
-  document.addEventListener("DOMContentLoaded", function() {
-    let warningButton = document.getElementById("warningButton");
-    warningButton.addEventListener("click", onWarningButtonClick);
-  });
-}
-
-function onWarningButtonClick() {
-  Services.prefs.setBoolPref(
-    "browser.aboutConfig.showWarning",
-    document.getElementById("showWarningNextTime").checked
-  );
-  loadPrefs();
-}
+document.addEventListener("DOMContentLoaded", loadPrefs, { once: true });
+window.addEventListener(
+  "load",
+  () => {
+    if (document.getElementById("about-config-search").value) {
+      filterPrefs();
+    }
+  },
+  { once: true }
+);
 
 function loadPrefs() {
   [...document.styleSheets].find(s => s.title == "infop").disabled = true;
