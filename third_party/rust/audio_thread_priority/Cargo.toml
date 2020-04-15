@@ -38,6 +38,7 @@ version = "0.15.0"
 terminal-logging = ["simple_logger"]
 [target."cfg(target_os = \"linux\")".dependencies.dbus]
 version = "0.6.4"
+optional = true
 
 [target."cfg(target_os = \"linux\")".dependencies.libc]
 version = "0.2"

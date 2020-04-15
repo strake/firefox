@@ -114,11 +114,8 @@ dependencies = [
 [[package]]
 name = "audio_thread_priority"
 version = "0.22.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f8fba1500e466a39dd3faa5aed20a50dfe0aa1b905264a453bbe9f49508994cc"
 dependencies = [
  "cfg-if",
- "dbus",
  "libc",
  "log",
  "mach",
@@ -1053,16 +1050,6 @@ dependencies = [
  "darling_core",
  "quote",
  "syn",
-]
-
-[[package]]
-name = "dbus"
-version = "0.6.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b9e1b39f3f6aa3d4a1522c4f0f9f1e9e9167bd93740a8690874caa7cf8ce47d7"
-dependencies = [
- "libc",
- "libdbus-sys",
 ]
 
 [[package]]
@@ -2538,15 +2525,6 @@ name = "libc"
 version = "0.2.59"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3262021842bf00fe07dbd6cf34ff25c99d7a7ebef8deea84db72be3ea3bb0aff"
-
-[[package]]
-name = "libdbus-sys"
-version = "0.1.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "18cb88963258d00f4962205dbb5933d82780d9962c8c8a064b651d2ad7189210"
-dependencies = [
- "pkg-config",
-]
 
 [[package]]
 name = "libloading"

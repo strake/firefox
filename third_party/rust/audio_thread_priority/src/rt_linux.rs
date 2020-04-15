@@ -4,6 +4,7 @@
 
 /* Widely copied from dbus-rs/dbus/examples/rtkit.rs */
 
+#[cfg(feature = "dbus")]
 extern crate dbus;
 extern crate libc;
 
@@ -11,6 +12,7 @@ use std::cmp;
 use std::error::Error;
 use std::io::Error as OSError;
 
+#[cfg(feature = "dbus")]
 use dbus::{BusType, Connection, Message, MessageItem, Props};
 
 use crate::AudioThreadPriorityError;
@@ -21,6 +23,7 @@ const RT_PRIO_DEFAULT: u32 = 10;
 #[allow(non_camel_case_types)]
 type kernel_pid_t = libc::c_long;
 
+#[cfg(feature = "dbus")]
 impl From<dbus::Error> for AudioThreadPriorityError {
     fn from(error: dbus::Error) -> Self {
         AudioThreadPriorityError::new(&format!(
@@ -31,6 +34,7 @@ impl From<dbus::Error> for AudioThreadPriorityError {
     }
 }
 
+#[cfg(feature = "dbus")]
 impl From<Box<dyn Error>> for AudioThreadPriorityError {
     fn from(error: Box<dyn Error>) -> Self {
         AudioThreadPriorityError::new(&format!("{}", error.description()))
@@ -74,6 +78,7 @@ pub struct RtPriorityHandleInternal {
     thread_info: RtPriorityThreadInfoInternal,
 }
 
+#[cfg(feature = "dbus")]
 fn item_as_i64(i: MessageItem) -> Result<i64, AudioThreadPriorityError> {
     match i {
         MessageItem::Int32(i) => Ok(i as i64),
@@ -85,6 +90,7 @@ fn item_as_i64(i: MessageItem) -> Result<i64, AudioThreadPriorityError> {
     }
 }
 
+#[cfg(feature = "dbus")]
 fn rtkit_set_realtime(thread: u64, pid: u64, prio: u32) -> Result<(), Box<dyn Error>> {
     let m = if unsafe { libc::getpid() as u64 } == pid {
         let mut m = Message::new_method_call(
@@ -112,6 +118,7 @@ fn rtkit_set_realtime(thread: u64, pid: u64, prio: u32) -> Result<(), Box<dyn Er
 
 /// Returns the maximum priority, maximum real-time time slice, and the current real-time time
 /// slice for this process.
+#[cfg(feature = "dbus")]
 fn get_limits() -> Result<(i64, u64, libc::rlimit64), AudioThreadPriorityError> {
     let c = Connection::get_private(BusType::System)?;
 
@@ -149,6 +156,22 @@ fn get_limits() -> Result<(i64, u64, libc::rlimit64), AudioThreadPriorityError> 
     }
 
     Ok((max_prio, (max_rttime as u64), current_limit))
+}
+
+/// Returns the maximum priority, maximum real-time time slice, and the current real-time time
+/// slice for this process.
+#[cfg(not(feature = "dbus"))]
+fn get_limits() -> Result<(i64, u64, libc::rlimit64), AudioThreadPriorityError> {
+    let mut current_limit = libc::rlimit64 {
+        rlim_cur: 0,
+        rlim_max: 0
+    };
+
+    if unsafe { libc::getrlimit64(libc::RLIMIT_RTTIME, &mut current_limit) } < 0 {
+        return Err(AudioThreadPriorityError::new_with_inner(&"getrlimit64", Box::new(OSError::last_os_error())));
+    }
+
+    Ok((0, 0, current_limit))
 }
 
 fn set_limits(request: u64, max: u64) -> Result<(), AudioThreadPriorityError> {
@@ -279,6 +302,7 @@ pub fn set_real_time_hard_limit_internal(
 }
 
 /// Promote a thread (possibly in another process) identified by its tid, to real-time.
+#[cfg(feature = "dbus")]
 pub fn promote_thread_to_real_time_internal(
     thread_info: RtPriorityThreadInfoInternal,
     audio_buffer_frames: u32,
@@ -309,5 +333,23 @@ pub fn promote_thread_to_real_time_internal(
                 e,
             ));
         }
+    }
+}
+
+/// Promote a thread (possibly in another process) identified by its tid, to real-time.
+#[cfg(not(feature = "dbus"))]
+pub fn promote_thread_to_real_time_internal(thread_info: RtPriorityThreadInfoInternal,
+                                            audio_buffer_frames: u32,
+                                            audio_samplerate_hz: u32) -> Result<RtPriorityHandleInternal, AudioThreadPriorityError>
+{
+    let RtPriorityThreadInfoInternal { pid, thread_id, .. } = thread_info;
+
+    let handle = RtPriorityHandleInternal { thread_info };
+
+    let (_, _, limits) = get_limits()?;
+    set_real_time_hard_limit_internal(audio_buffer_frames, audio_samplerate_hz)?;
+
+    if unsafe { libc::setrlimit64(libc::RLIMIT_RTTIME, &limits) } >= 0 { Ok(handle) } else {
+        Err(AudioThreadPriorityError::new_with_inner(&"setrlimit64", Box::new(OSError::last_os_error())))
     }
 }

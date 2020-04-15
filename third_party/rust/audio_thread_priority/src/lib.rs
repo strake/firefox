@@ -66,6 +66,7 @@ cfg_if! {
         use rt_win::RtPriorityHandleInternal;
     } else if #[cfg(target_os = "linux")] {
         mod rt_linux;
+        #[cfg(feature = "dbus")]
         extern crate dbus;
         extern crate libc;
         use rt_linux::set_real_time_hard_limit_internal as set_real_time_hard_limit;

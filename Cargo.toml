@@ -81,3 +81,6 @@ rev = "b7cfd39b531680217537cfcf5294a22077a0a58d"
 [patch.crates-io.cranelift-wasm]
 git = "https://github.com/bytecodealliance/wasmtime"
 rev = "b7cfd39b531680217537cfcf5294a22077a0a58d"
+
+[patch.crates-io.audio_thread_priority]
+path = "third_party/rust/audio_thread_priority"
