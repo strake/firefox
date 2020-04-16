@@ -6704,7 +6704,6 @@ var gUIDensity = {
     }
 
     gBrowser.tabContainer.uiDensityChanged();
-    gURLBar.updateLayoutBreakout();
   },
 };
 

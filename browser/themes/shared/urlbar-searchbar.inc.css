@@ -155,7 +155,7 @@
 }
 
 :root:not([chromehidden~="toolbar"]) #urlbar.searchButton:not([breakout]) > #urlbar-background,
-:root:not([chromehidden~="toolbar"]) #urlbar.searchButton:not([breakout-extend]) > #urlbar-background {
+:root:not([chromehidden~="toolbar"]) #urlbar.searchButton > #urlbar-background {
   inset-inline-start: @urlbarSearchButtonWidth@;
 }
 
@@ -188,57 +188,12 @@
   display: none;
 }
 
-#urlbar[breakout][breakout-extend],
-#urlbar[breakout][breakout-extend-disabled][open] {
-  /* The z-index needs to be big enough to trump other positioned UI pieces
-     that we want to overlay. 3 is used in the tab bar. */
-  z-index: 3;
-  height: auto;
-}
-
-#urlbar[breakout][breakout-extend] {
-  top: -@urlbarBreakoutExtend@;
-  left: calc(-@urlbarMarginInline@ - @urlbarBreakoutExtend@);
-  width: calc(100% + 2 * @urlbarMarginInline@ + 2 * @urlbarBreakoutExtend@);
-}
-
-#urlbar[breakout][breakout-extend] > #urlbar-background {
-  box-shadow: 0 3px 8px 0 rgba(0,0,0,.15)
-}
-
-#urlbar[breakout][breakout-extend][open] > #urlbar-background {
-  box-shadow: 0 5px 18px rgba(0,0,0,.2);
-}
-
-#urlbar[breakout][breakout-extend] > #urlbar-input-container {
-  height: calc(var(--urlbar-toolbar-height) + 2 * @urlbarBreakoutExtend@);
-  padding-block: calc(@urlbarBreakoutExtend@ + (var(--urlbar-toolbar-height) - var(--urlbar-height)) / 2);
-  padding-inline: calc(@urlbarMarginInline@ + @urlbarBreakoutExtend@);
-}
-
-#urlbar.searchButton[breakout][breakout-extend] > #urlbar-input-container > #urlbar-search-button {
-  fill: currentColor;
-  fill-opacity: .6;
-}
-
 @keyframes urlbar-grow {
   0% {
     transform: scaleX(.99) scaleY(.95);
   }
   100% {
     transform: scale(1.0);
-  }
-}
-
-#urlbar[breakout][breakout-extend] > #urlbar-background {
-  animation-name: urlbar-grow;
-  animation-duration: 0s;
-  animation-timing-function: var(--animation-easing-function);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  #urlbar[breakout][breakout-extend][breakout-extend-animate] > #urlbar-background {
-    animation-duration: 150ms;
   }
 }
 

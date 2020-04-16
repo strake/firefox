@@ -208,8 +208,6 @@ class UrlbarInput {
     this.window.addEventListener("customizationstarting", this);
     this.window.addEventListener("aftercustomization", this);
 
-    this.updateLayoutBreakout();
-
     this._initCopyCutController();
     this._initPasteAndGo();
 
@@ -1106,7 +1104,6 @@ class UrlbarInput {
     this._hideFocus = false;
     if (this.focused) {
       this.setAttribute("focused", "true");
-      this.startLayoutExtend();
     }
   }
 
@@ -1138,88 +1135,6 @@ class UrlbarInput {
 
   get lastSearchString() {
     return this._lastSearchString;
-  }
-
-  async updateLayoutBreakout() {
-    if (!this._toolbar) {
-      // Expanding requires a parent toolbar.
-      return;
-    }
-    if (this.document.fullscreenElement) {
-      // Toolbars are hidden in DOM fullscreen mode, so we can't get proper
-      // layout information and need to retry after leaving that mode.
-      this.window.addEventListener(
-        "fullscreen",
-        () => {
-          this.updateLayoutBreakout();
-        },
-        { once: true }
-      );
-      return;
-    }
-    await this._updateLayoutBreakoutDimensions();
-    this.startLayoutExtend();
-  }
-
-  startLayoutExtend() {
-    // Do not expand if:
-    // The Urlbar does not support being expanded or it is already expanded
-    if (
-      !this.hasAttribute("breakout") ||
-      this.hasAttribute("breakout-extend")
-    ) {
-      return;
-    }
-    // The Urlbar is unfocused or reduce motion is on and the view is closed.
-    // gReduceMotion is accurate in most cases, but it is automatically set to
-    // true when windows are loaded. We check `prefers-reduced-motion: reduce`
-    // to ensure the user actually set prefers-reduced-motion. We check
-    // gReduceMotion first to save work in the common case of having
-    // prefers-reduced-motion disabled.
-    if (
-      !this.view.isOpen &&
-      (this.getAttribute("focused") != "true" ||
-        (this.window.gReduceMotion &&
-          this.window.matchMedia("(prefers-reduced-motion: reduce)").matches))
-    ) {
-      return;
-    }
-
-    if (UrlbarPrefs.get("disableExtendForTests")) {
-      this.setAttribute("breakout-extend-disabled", "true");
-      return;
-    }
-    this.removeAttribute("breakout-extend-disabled");
-
-    this._toolbar.setAttribute("urlbar-exceeds-toolbar-bounds", "true");
-    this.setAttribute("breakout-extend", "true");
-
-    // Enable the animation only after the first extend call to ensure it
-    // doesn't run when opening a new window.
-    if (!this.hasAttribute("breakout-extend-animate")) {
-      this.window.promiseDocumentFlushed(() => {
-        this.window.requestAnimationFrame(() => {
-          this.setAttribute("breakout-extend-animate", "true");
-        });
-      });
-    }
-  }
-
-  endLayoutExtend() {
-    // If reduce motion is enabled, we want to collapse the Urlbar here so the
-    // user sees only sees two states: not expanded, and expanded with the view
-    // open.
-    if (
-      !this.hasAttribute("breakout-extend") ||
-      this.view.isOpen ||
-      (this.getAttribute("focused") == "true" &&
-        (!this.window.gReduceMotion ||
-          !this.window.matchMedia("(prefers-reduced-motion: reduce)").matches))
-    ) {
-      return;
-    }
-    this.removeAttribute("breakout-extend");
-    this._toolbar.removeAttribute("urlbar-exceeds-toolbar-bounds");
   }
 
   /**
@@ -1306,43 +1221,6 @@ class UrlbarInput {
     // The input may retain focus when switching tabs in which case we
     // need to close the view explicitly.
     this.view.close();
-  }
-
-  async _updateLayoutBreakoutDimensions() {
-    // When this method gets called a second time before the first call
-    // finishes, we need to disregard the first one.
-    let updateKey = {};
-    this._layoutBreakoutUpdateKey = updateKey;
-
-    this.removeAttribute("breakout");
-    this.textbox.parentNode.removeAttribute("breakout");
-
-    await this.window.promiseDocumentFlushed(() => {});
-    await new Promise(resolve => {
-      this.window.requestAnimationFrame(() => {
-        if (this._layoutBreakoutUpdateKey != updateKey) {
-          return;
-        }
-
-        this.textbox.parentNode.style.setProperty(
-          "--urlbar-container-height",
-          px(getBoundsWithoutFlushing(this.textbox.parentNode).height)
-        );
-        this.textbox.style.setProperty(
-          "--urlbar-height",
-          px(getBoundsWithoutFlushing(this.textbox).height)
-        );
-        this.textbox.style.setProperty(
-          "--urlbar-toolbar-height",
-          px(getBoundsWithoutFlushing(this._toolbar).height)
-        );
-
-        this.setAttribute("breakout", "true");
-        this.textbox.parentNode.setAttribute("breakout", "true");
-
-        resolve();
-      });
-    });
   }
 
   _setValue(val, allowTrim) {
@@ -1997,7 +1875,6 @@ class UrlbarInput {
     });
 
     this.removeAttribute("focused");
-    this.endLayoutExtend();
 
     if (this._autofillPlaceholder && this.window.gBrowser.userTypedValue) {
       // If we were autofilling, remove the autofilled portion, by restoring
@@ -2088,8 +1965,6 @@ class UrlbarInput {
         this.inputField.value = this._focusUntrimmedValue = this._untrimmedValue;
       }
     }
-
-    this.startLayoutExtend();
 
     if (this.focusedViaMousedown) {
       this.view.autoOpen({ event });

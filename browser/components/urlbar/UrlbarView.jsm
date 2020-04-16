@@ -356,7 +356,6 @@ class UrlbarView {
     this.input.inputField.setAttribute("aria-expanded", "false");
 
     this.input.removeAttribute("open");
-    this.input.endLayoutExtend();
 
     // Search Tips can open the view without the Urlbar being focused. If the
     // tip is ignored (e.g. the page content is clicked or the window loses
@@ -610,7 +609,6 @@ class UrlbarView {
     this.input.inputField.setAttribute("aria-expanded", "true");
 
     this.input.setAttribute("open", "true");
-    this.input.startLayoutExtend();
 
     this.window.addEventListener("resize", this);
     this.window.addEventListener("blur", this);
