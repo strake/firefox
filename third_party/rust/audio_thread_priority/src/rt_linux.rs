@@ -9,7 +9,6 @@ extern crate dbus;
 extern crate libc;
 
 use std::cmp;
-use std::error::Error;
 use std::io::Error as OSError;
 
 #[cfg(feature = "dbus")]
@@ -17,7 +16,7 @@ use dbus::{BusType, Connection, Message, MessageItem, Props};
 
 use crate::AudioThreadPriorityError;
 
-const DBUS_SOCKET_TIMEOUT: i32 = 10_000;
+#[allow(dead_code)]
 const RT_PRIO_DEFAULT: u32 = 10;
 // This is different from libc::pid_t, which is 32 bits, and is defined in sys/types.h.
 #[allow(non_camel_case_types)]
@@ -342,7 +341,7 @@ pub fn promote_thread_to_real_time_internal(thread_info: RtPriorityThreadInfoInt
                                             audio_buffer_frames: u32,
                                             audio_samplerate_hz: u32) -> Result<RtPriorityHandleInternal, AudioThreadPriorityError>
 {
-    let RtPriorityThreadInfoInternal { pid, thread_id, .. } = thread_info;
+    let RtPriorityThreadInfoInternal { pid: _, thread_id: _, .. } = thread_info;
 
     let handle = RtPriorityHandleInternal { thread_info };
 

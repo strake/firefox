@@ -32,21 +32,20 @@
     <command id="cmd_printPreview" oncommand="PrintUtils.printPreview(PrintPreviewListener);"/>
     <command id="cmd_file_importFromAnotherBrowser" oncommand="MigrationUtils.showMigrationWizard(window, [MigrationUtils.MIGRATION_ENTRYPOINT_FILE_MENU]);"/>
     <command id="cmd_help_importFromAnotherBrowser" oncommand="MigrationUtils.showMigrationWizard(window, [MigrationUtils.MIGRATION_ENTRYPOINT_HELP_MENU]);"/>
-    <command id="cmd_close" oncommand="BrowserCloseTabOrWindow(event);"/>
+    <command id="cmd_close" oncommand="BrowserCloseTabOrWindow(event);" reserved="true"/>
     <command id="cmd_closeWindow" oncommand="BrowserTryToCloseWindow()"/>
     <command id="cmd_toggleMute" oncommand="gBrowser.toggleMuteAudioOnMultiSelectedTabs(gBrowser.selectedTab)"/>
     <command id="cmd_CustomizeToolbars" oncommand="gCustomizeMode.enter()"/>
     <command id="cmd_toggleOfflineStatus" oncommand="BrowserOffline.toggleOfflineStatus();"/>
-    <command id="cmd_quitApplication" oncommand="goQuitApplication()"/>
 
     <command id="View:PageSource" oncommand="BrowserViewSource(window.gBrowser.selectedBrowser);"/>
     <command id="View:PageInfo" oncommand="BrowserPageInfo();"/>
     <command id="View:FullScreen" oncommand="BrowserFullScreen();"/>
     <command id="View:ReaderView" oncommand="ReaderParent.toggleReaderMode(event);"/>
     <command id="View:PictureInPicture" oncommand="PictureInPicture.onCommand(event);"/>
-    <command id="cmd_find" oncommand="gLazyFindCommand('onFindCommand')"/>
-    <command id="cmd_findAgain" oncommand="gLazyFindCommand('onFindAgainCommand', false)"/>
-    <command id="cmd_findPrevious" oncommand="gLazyFindCommand('onFindAgainCommand', true)"/>
+    <command id="cmd_find" oncommand="gLazyFindCommand('onFindCommand')" reserved="true"/>
+    <command id="cmd_findAgain" oncommand="gLazyFindCommand('onFindAgainCommand', false)" reserved="true"/>
+    <command id="cmd_findPrevious" oncommand="gLazyFindCommand('onFindAgainCommand', true)" reserved="true"/>
 #ifdef XP_MACOSX
     <command id="cmd_findSelection" oncommand="gLazyFindCommand('onFindSelectionCommand')"/>
 #endif
@@ -71,8 +70,8 @@
     <command id="Browser:ReloadSkipCache" oncommand="BrowserReloadSkipCache()" disabled="true">
       <observes element="Browser:Reload" attribute="disabled"/>
     </command>
-    <command id="Browser:NextTab" oncommand="gBrowser.tabContainer.advanceSelectedTab(1, true);"/>
-    <command id="Browser:PrevTab" oncommand="gBrowser.tabContainer.advanceSelectedTab(-1, true);"/>
+    <command id="Browser:NextTab" oncommand="gBrowser.tabContainer.advanceSelectedTab(1, true);" reserved="true"/>
+    <command id="Browser:PrevTab" oncommand="gBrowser.tabContainer.advanceSelectedTab(-1, true);" reserved="true"/>
     <command id="Browser:ShowAllTabs" oncommand="gTabsPanel.showAllTabsPanel();"/>
     <command id="cmd_fullZoomReduce"  oncommand="FullZoom.reduce()"/>
     <command id="cmd_fullZoomEnlarge" oncommand="FullZoom.enlarge()"/>
@@ -81,7 +80,7 @@
     <command id="cmd_gestureRotateLeft" oncommand="gGestureSupport.rotate(event.sourceEvent)"/>
     <command id="cmd_gestureRotateRight" oncommand="gGestureSupport.rotate(event.sourceEvent)"/>
     <command id="cmd_gestureRotateEnd" oncommand="gGestureSupport.rotateEnd()"/>
-    <command id="Browser:OpenLocation" oncommand="openLocation(event);"/>
+    <command id="Browser:OpenLocation" oncommand="openLocation(event);" reserved="true"/>
     <command id="Browser:RestoreLastSession" oncommand="SessionStore.restoreLastSession();" disabled="true"/>
     <command id="Browser:NewUserContextTab" oncommand="openNewUserContextTab(event.sourceEvent);"/>
     <command id="Browser:OpenAboutContainers" oncommand="openPreferences('paneContainers');"/>
@@ -287,19 +286,6 @@
 #ifdef XP_MACOSX
     <key id="key_sanitize_mac" command="Tools:Sanitize" keycode="VK_BACK" modifiers="accel,shift"/>
 #endif
-    <key id="key_quitApplication" data-l10n-id="quit-app-shortcut"
-#ifdef XP_WIN
-         modifiers="accel,shift"
-#else
-         modifiers="accel"
-#endif
-# On OS X, dark voodoo magic invokes the quit code for this key.
-# So we're not adding the attribute on OSX because of backwards/add-on compat.
-# See bug 1369909 for background on this.
-#ifndef XP_MACOSX
-         command="cmd_quitApplication"
-#endif
-         reserved="true"/>
 
 #    <key id="key_undoCloseTab" command="History:UndoCloseTab" data-l10n-id="tab-new-shortcut" modifiers="accel,shift"/>
     <key id="key_undoCloseTab" command="History:UndoCloseTab" data-l10n-id="close-shortcut" modifiers="accel,shift"/>

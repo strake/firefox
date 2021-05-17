@@ -4424,7 +4424,7 @@ dependencies = [
 [[package]]
 name = "spirv-cross-internal"
 version = "0.1.0"
-source = "git+https://github.com/kvark/spirv_cross?branch=wgpu3#20191ad2f370afd6d247edcb9ff9da32d3bedb9c"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "cc",
 ]
@@ -4432,7 +4432,7 @@ dependencies = [
 [[package]]
 name = "spirv_cross"
 version = "0.20.0"
-source = "git+https://github.com/kvark/spirv_cross?branch=wgpu3#20191ad2f370afd6d247edcb9ff9da32d3bedb9c"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "spirv-cross-internal",
 ]

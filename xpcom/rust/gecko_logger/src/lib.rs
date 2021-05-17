@@ -119,6 +119,7 @@ pub extern "C" fn set_rust_log_level(module: *const c_char, level: u8) {
     // replace it with a pointer to `new_map`. After this the value of the
     // pointer will never change. When we do replace the null pointer, we must
     // then pass the ownership of `new_map` to LOG_MODULE_MAP.
+    #[allow(deprecated)]
     let old_ptr = LOG_MODULE_MAP.compare_and_swap(ptr::null_mut(), myptr, Ordering::SeqCst);
     if old_ptr.is_null() {
         if !myptr.is_null() {

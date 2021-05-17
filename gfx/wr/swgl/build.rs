@@ -76,7 +76,7 @@ fn translate_shader(shader_key: &str, shader_dir: &str) {
     if build.get_compiler().is_like_msvc() {
         build.flag("/EP");
     } else {
-        build.flag("-xc").flag("-P");
+        build.flag("-xc").flag("-P").flag("-Wno-psabi");
     }
     build.file(&imp_name);
     let vs = build.clone()
