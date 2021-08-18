@@ -1051,28 +1051,11 @@ nsresult NS_NewSimpleStreamListener(
 
 nsresult NS_CheckPortSafety(int32_t port, const char* scheme,
                             nsIIOService* ioService /* = nullptr */) {
-  nsresult rv;
-  nsCOMPtr<nsIIOService> grip;
-  rv = net_EnsureIOService(&ioService, grip);
-  if (ioService) {
-    bool allow;
-    rv = ioService->AllowPort(port, scheme, &allow);
-    if (NS_SUCCEEDED(rv) && !allow) {
-      NS_WARNING("port blocked");
-      rv = NS_ERROR_PORT_ACCESS_NOT_ALLOWED;
-    }
-  }
-  return rv;
+  return NS_OK;
 }
 
 nsresult NS_CheckPortSafety(nsIURI* uri) {
-  int32_t port;
-  nsresult rv = uri->GetPort(&port);
-  if (NS_FAILED(rv) || port == -1)  // port undefined or default-valued
-    return NS_OK;
-  nsAutoCString scheme;
-  uri->GetScheme(scheme);
-  return NS_CheckPortSafety(port, scheme.get());
+  return NS_OK;
 }
 
 nsresult NS_NewProxyInfo(const nsACString& type, const nsACString& host,
