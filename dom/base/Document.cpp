@@ -16355,11 +16355,6 @@ void Document::RemoveToplevelLoadingDocument(Document* aDoc) {
 
 StylePrefersColorScheme Document::PrefersColorScheme(
     IgnoreRFP aIgnoreRFP) const {
-  if (aIgnoreRFP == IgnoreRFP::No &&
-      nsContentUtils::ShouldResistFingerprinting(this)) {
-    return StylePrefersColorScheme::Light;
-  }
-
   if (nsPresContext* pc = GetPresContext()) {
     if (auto devtoolsOverride = pc->GetOverridePrefersColorScheme()) {
       return *devtoolsOverride;
@@ -16377,12 +16372,8 @@ StylePrefersColorScheme Document::PrefersColorScheme(
       return StylePrefersColorScheme::Light;
     case 1:
       return StylePrefersColorScheme::Dark;
-    case 2:
-      return StylePrefersColorScheme::NoPreference;
     default:
-      // This only occurs if the user has set the ui.systemUsesDarkTheme pref to
-      // an invalid value.
-      return StylePrefersColorScheme::Light;
+      return StylePrefersColorScheme::NoPreference;
   }
 }
 

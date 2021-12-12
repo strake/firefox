@@ -85,7 +85,7 @@ nsLookAndFeelIntPref nsXPLookAndFeel::sIntPrefs[] = {
     {"ui.GtkCSDMinimizeButton", eIntID_GTKCSDMinimizeButton, false, 0},
     {"ui.GtkCSDMaximizeButton", eIntID_GTKCSDMaximizeButton, false, 0},
     {"ui.GtkCSDCloseButton", eIntID_GTKCSDCloseButton, false, 0},
-    {"ui.systemUsesDarkTheme", eIntID_SystemUsesDarkTheme, false, 0},
+    {"ui.systemUsesDarkTheme", eIntID_SystemUsesDarkTheme, true, 0},
     {"ui.prefersReducedMotion", eIntID_PrefersReducedMotion, false, 0},
     {"ui.primaryPointerCapabilities", eIntID_PrimaryPointerCapabilities, false,
      6 /* fine and hover-capable pointer, i.e. mouse-type */},

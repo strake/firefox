@@ -1015,13 +1015,6 @@ void nsLookAndFeel::EnsureInit() {
     gtk_style_context_get_background_color(style, GTK_STATE_FLAG_NORMAL, &bg);
     gtk_style_context_get_color(style, GTK_STATE_FLAG_NORMAL, &fg);
     LOG(("nsLookAndFeel::EnsureInit() [%p] Chrome process\n", (void*)this));
-    // Update mSystemUsesDarkTheme only in the parent process since in the child
-    // processes we forcibly set gtk-theme-name so that we can't get correct
-    // results.  Instead mSystemUsesDarkTheme in the child processes is updated
-    // via our caching machinery.
-    mSystemUsesDarkTheme =
-        (RelativeLuminanceUtils::Compute(GDK_RGBA_TO_NS_RGBA(bg)) <
-         RelativeLuminanceUtils::Compute(GDK_RGBA_TO_NS_RGBA(fg)));
 
     mHighContrast = StaticPrefs::widget_content_gtk_high_contrast_enabled() &&
                     GetGtkTheme().Find(NS_LITERAL_CSTRING("HighContrast")) >= 0;
