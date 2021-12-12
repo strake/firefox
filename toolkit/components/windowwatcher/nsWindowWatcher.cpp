@@ -1698,24 +1698,18 @@ uint32_t nsWindowWatcher::CalculateChromeFlagsHelper(
     return chromeFlags;
   }
 
-  // Web content isn't allowed to control UI visibility separately, but only
-  // whether to open a popup or not.
-  //
-  // The above code is still necessary to calculate `presenceFlag`.
-  // (`ShouldOpenPopup` early returns and doesn't check all feature)
-
   if (ShouldOpenPopup(aFeatures, aSizeSpec)) {
     // Flags for opening a popup, that doesn't have the following:
-    //   * nsIWebBrowserChrome::CHROME_TOOLBAR
-    //   * nsIWebBrowserChrome::CHROME_PERSONAL_TOOLBAR
-    //   * nsIWebBrowserChrome::CHROME_MENUBAR
     return aInitialFlags | nsIWebBrowserChrome::CHROME_TITLEBAR |
            nsIWebBrowserChrome::CHROME_WINDOW_CLOSE |
            nsIWebBrowserChrome::CHROME_LOCATIONBAR |
            nsIWebBrowserChrome::CHROME_STATUSBAR |
            nsIWebBrowserChrome::CHROME_WINDOW_RESIZE |
            nsIWebBrowserChrome::CHROME_WINDOW_MIN |
-           nsIWebBrowserChrome::CHROME_SCROLLBARS;
+           nsIWebBrowserChrome::CHROME_SCROLLBARS |
+           nsIWebBrowserChrome::CHROME_TOOLBAR |
+           nsIWebBrowserChrome::CHROME_PERSONAL_TOOLBAR |
+           nsIWebBrowserChrome::CHROME_MENUBAR;
   }
 
   // Otherwise open the current/new tab in the current/new window
