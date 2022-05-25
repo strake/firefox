@@ -165,91 +165,6 @@ const PREFS_CONFIG = new Map([
     },
   ],
   [
-    "feeds.section.topstories.options",
-    {
-      title: "Configuration options for top stories feed",
-      // This is a dynamic pref as it depends on the feed being shown or not
-      getValue: args =>
-        JSON.stringify({
-          api_key_pref: "extensions.pocket.oAuthConsumerKey",
-          // Use the opposite value as what default value the feed would have used
-          hidden: !PREFS_CONFIG.get("feeds.system.topstories").getValue(args),
-          provider_icon: "pocket",
-          provider_name: "Pocket",
-          read_more_endpoint:
-            "https://getpocket.com/explore/trending?src=fx_new_tab",
-          stories_endpoint: `https://getpocket.cdn.mozilla.net/v3/firefox/global-recs?version=3&consumer_key=$apiKey&locale_lang=${
-            args.locale
-          }&feed_variant=${
-            showSpocs(args) ? "default_spocs_on" : "default_spocs_off"
-          }`,
-          stories_referrer: "https://getpocket.com/recommendations",
-          topics_endpoint: `https://getpocket.cdn.mozilla.net/v3/firefox/trending-topics?version=2&consumer_key=$apiKey&locale_lang=${args.locale}`,
-          model_keys: [
-            "nmf_model_animals",
-            "nmf_model_business",
-            "nmf_model_career",
-            "nmf_model_datascience",
-            "nmf_model_design",
-            "nmf_model_education",
-            "nmf_model_entertainment",
-            "nmf_model_environment",
-            "nmf_model_fashion",
-            "nmf_model_finance",
-            "nmf_model_food",
-            "nmf_model_health",
-            "nmf_model_home",
-            "nmf_model_life",
-            "nmf_model_marketing",
-            "nmf_model_politics",
-            "nmf_model_programming",
-            "nmf_model_science",
-            "nmf_model_shopping",
-            "nmf_model_sports",
-            "nmf_model_tech",
-            "nmf_model_travel",
-            "nb_model_animals",
-            "nb_model_books",
-            "nb_model_business",
-            "nb_model_career",
-            "nb_model_datascience",
-            "nb_model_design",
-            "nb_model_economics",
-            "nb_model_education",
-            "nb_model_entertainment",
-            "nb_model_environment",
-            "nb_model_fashion",
-            "nb_model_finance",
-            "nb_model_food",
-            "nb_model_game",
-            "nb_model_health",
-            "nb_model_history",
-            "nb_model_home",
-            "nb_model_life",
-            "nb_model_marketing",
-            "nb_model_military",
-            "nb_model_philosophy",
-            "nb_model_photography",
-            "nb_model_politics",
-            "nb_model_productivity",
-            "nb_model_programming",
-            "nb_model_psychology",
-            "nb_model_science",
-            "nb_model_shopping",
-            "nb_model_society",
-            "nb_model_space",
-            "nb_model_sports",
-            "nb_model_tech",
-            "nb_model_travel",
-            "nb_model_writing",
-          ],
-          show_spocs: showSpocs(args),
-          personalized: true,
-          version: 1,
-        }),
-    },
-  ],
-  [
     "feeds.topsites",
     {
       title: "Displays Top Sites on the New Tab Page",
@@ -262,18 +177,6 @@ const PREFS_CONFIG = new Map([
       title:
         "Show sponsored cards in spoc experiment (show_spocs in topstories.options has to be set to true as well)",
       value: true,
-    },
-  ],
-  [
-    "pocketCta",
-    {
-      title: "Pocket cta and button for logged out users.",
-      value: JSON.stringify({
-        cta_button: "",
-        cta_text: "",
-        cta_url: "",
-        use_cta: false,
-      }),
     },
   ],
   [
@@ -715,25 +618,6 @@ this.ActivityStream = class ActivityStream {
     try {
       this._updateDynamicPrefs();
       this._defaultPrefs.init();
-
-      // Look for outdated user pref values that might have been accidentally
-      // persisted when restoring the original pref value at the end of an
-      // experiment across versions with a different default value.
-      const DS_CONFIG =
-        "browser.newtabpage.activity-stream.discoverystream.config";
-      if (
-        Services.prefs.prefHasUserValue(DS_CONFIG) &&
-        [
-          // Firefox 66
-          `{"api_key_pref":"extensions.pocket.oAuthConsumerKey","enabled":false,"show_spocs":true,"layout_endpoint":"https://getpocket.com/v3/newtab/layout?version=1&consumer_key=$apiKey&layout_variant=basic"}`,
-          // Firefox 67
-          `{"api_key_pref":"extensions.pocket.oAuthConsumerKey","enabled":false,"show_spocs":true,"layout_endpoint":"https://getpocket.cdn.mozilla.net/v3/newtab/layout?version=1&consumer_key=$apiKey&layout_variant=basic"}`,
-          // Firefox 68
-          `{"api_key_pref":"extensions.pocket.oAuthConsumerKey","collapsible":true,"enabled":false,"show_spocs":true,"hardcoded_layout":true,"personalized":false,"layout_endpoint":"https://getpocket.cdn.mozilla.net/v3/newtab/layout?version=1&consumer_key=$apiKey&layout_variant=basic"}`,
-        ].includes(Services.prefs.getStringPref(DS_CONFIG))
-      ) {
-        Services.prefs.clearUserPref(DS_CONFIG);
-      }
 
       // Hook up the store and let all feeds and pages initialize
       this.store.init(

@@ -114,7 +114,6 @@ export class ListItem extends React.PureComponent {
             title={this.props.title}
             source={this.props.source}
             type={this.props.type}
-            pocket_id={this.props.pocket_id}
             shim={this.props.shim}
             bookmarkGuid={this.props.bookmarkGuid}
             flightId={this.props.flightId}
@@ -160,7 +159,6 @@ export function _List(props) {
             context_type={rec.context_type}
             type={props.type}
             url={rec.url}
-            pocket_id={rec.pocket_id}
             bookmarkGuid={rec.bookmarkGuid}
             engagement={rec.engagement}
           />

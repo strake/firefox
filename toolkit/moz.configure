@@ -714,8 +714,6 @@ simple_keyfile('Adjust SDK')
 
 id_and_secret_keyfile('Leanplum SDK')
 
-simple_keyfile('Pocket API')
-
 
 # WebRender Debugger integration
 # ==============================================================

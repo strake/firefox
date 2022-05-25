@@ -16,7 +16,6 @@ let LOGIN_FILL_ITEMS = [
   ],
   null,
 ];
-let hasPocket = Services.prefs.getBoolPref("extensions.pocket.enabled");
 let hasContainers =
   Services.prefs.getBoolPref("privacy.userContext.enabled") &&
   ContextualIdentityService.getPublicIdentities().length;
@@ -82,7 +81,7 @@ add_task(async function test_xul_text_link_label() {
     true,
     "context-savelink",
     true,
-    ...(hasPocket ? ["context-savelinktopocket", true] : []),
+    ...[],
     "context-copylink",
     true,
     "context-searchselect",
@@ -160,7 +159,7 @@ add_task(async function test_plaintext() {
     null,
     "context-savepage",
     true,
-    ...(hasPocket ? ["context-pocket", true] : []),
+    ...[],
     "---",
     null,
     "context-sendpagetodevice",
@@ -203,7 +202,7 @@ add_task(async function test_link() {
     true,
     "context-savelink",
     true,
-    ...(hasPocket ? ["context-savelinktopocket", true] : []),
+    ...[],
     "context-copylink",
     true,
     "context-searchselect",

@@ -54,7 +54,6 @@ XPCOMUtils.defineLazyModuleGetters(this, {
   PlacesUIUtils: "resource:///modules/PlacesUIUtils.jsm",
   PlacesTransactions: "resource://gre/modules/PlacesTransactions.jsm",
   PluralForm: "resource://gre/modules/PluralForm.jsm",
-  Pocket: "chrome://pocket/content/Pocket.jsm",
   PrivateBrowsingUtils: "resource://gre/modules/PrivateBrowsingUtils.jsm",
   ProcessHangMonitor: "resource:///modules/ProcessHangMonitor.jsm",
   PromiseUtils: "resource://gre/modules/PromiseUtils.jsm",
@@ -230,11 +229,6 @@ XPCOMUtils.defineLazyScriptGetter(
   this,
   "gGfxUtils",
   "chrome://browser/content/browser-graphics-utils.js"
-);
-XPCOMUtils.defineLazyScriptGetter(
-  this,
-  "pktUI",
-  "chrome://pocket/content/main.js"
 );
 XPCOMUtils.defineLazyScriptGetter(
   this,

@@ -26,70 +26,6 @@ ChromeUtils.defineModuleGetter(
  * `${feed_pref_name}.options`.
  */
 const BUILT_IN_SECTIONS = {
-  "feeds.section.topstories": options => ({
-    id: "topstories",
-    pref: {
-      titleString: {
-        id: "home-prefs-recommended-by-header",
-        values: { provider: options.provider_name },
-      },
-      descString: {
-        id: "home-prefs-recommended-by-description-update",
-        values: { provider: options.provider_name },
-      },
-      nestedPrefs: options.show_spocs
-        ? [
-            {
-              name: "showSponsored",
-              titleString: "home-prefs-recommended-by-option-sponsored-stories",
-              icon: "icon-info",
-            },
-          ]
-        : [],
-      learnMore: {
-        link: {
-          href: "https://getpocket.com/firefox/new_tab_learn_more",
-          id: "home-prefs-recommended-by-learn-more",
-        },
-      },
-    },
-    shouldHidePref: options.hidden,
-    eventSource: "TOP_STORIES",
-    icon: options.provider_icon,
-    title: {
-      id: "newtab-section-header-pocket",
-      values: { provider: options.provider_name },
-    },
-    learnMore: {
-      link: {
-        href: "https://getpocket.com/firefox/new_tab_learn_more",
-        message: { id: "newtab-pocket-learn-more" },
-      },
-    },
-    privacyNoticeURL:
-      "https://www.mozilla.org/privacy/firefox/#suggest-relevant-content",
-    compactCards: false,
-    rowsPref: "section.topstories.rows",
-    maxRows: 4,
-    availableLinkMenuOptions: [
-      "CheckBookmarkOrArchive",
-      "CheckSavedToPocket",
-      "Separator",
-      "OpenInNewWindow",
-      "OpenInPrivateWindow",
-      "Separator",
-      "BlockUrl",
-    ],
-    emptyState: {
-      message: {
-        id: "newtab-empty-section-topstories",
-        values: { provider: options.provider_name },
-      },
-      icon: "check",
-    },
-    shouldSendImpressionStats: true,
-    dedupeFrom: ["highlights"],
-  }),
   "feeds.section.highlights": options => ({
     id: "highlights",
     pref: {
@@ -107,14 +43,6 @@ const BUILT_IN_SECTIONS = {
         {
           name: "section.highlights.includeDownloads",
           titleString: "home-prefs-highlights-option-most-recent-download",
-        },
-        {
-          name: "section.highlights.includePocket",
-          titleString: "home-prefs-highlights-option-saved-to-pocket",
-          hidden: !Services.prefs.getBoolPref(
-            "extensions.pocket.enabled",
-            true
-          ),
         },
       ],
     },
@@ -135,11 +63,10 @@ const BUILT_IN_SECTIONS = {
 
 const SectionsManager = {
   ACTIONS_TO_PROXY: ["WEBEXT_CLICK", "WEBEXT_DISMISS"],
-  CONTEXT_MENU_PREFS: { CheckSavedToPocket: "extensions.pocket.enabled" },
+  CONTEXT_MENU_PREFS: { },
   CONTEXT_MENU_OPTIONS_FOR_HIGHLIGHT_TYPES: {
     history: [
       "CheckBookmark",
-      "CheckSavedToPocket",
       "Separator",
       "OpenInNewWindow",
       "OpenInPrivateWindow",
@@ -149,22 +76,12 @@ const SectionsManager = {
     ],
     bookmark: [
       "CheckBookmark",
-      "CheckSavedToPocket",
       "Separator",
       "OpenInNewWindow",
       "OpenInPrivateWindow",
       "Separator",
       "BlockUrl",
       "DeleteUrl",
-    ],
-    pocket: [
-      "ArchiveFromPocket",
-      "CheckSavedToPocket",
-      "Separator",
-      "OpenInNewWindow",
-      "OpenInPrivateWindow",
-      "Separator",
-      "BlockUrl",
     ],
     download: [
       "OpenFile",

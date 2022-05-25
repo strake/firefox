@@ -615,8 +615,6 @@ home-prefs-highlights-options-bookmarks =
     .label = Bookmarks
 home-prefs-highlights-option-most-recent-download =
     .label = Most Recent Download
-home-prefs-highlights-option-saved-to-pocket =
-    .label = Pages Saved to { -pocket-brand-name }
 
 # For the "Snippets" feature traditionally on about:home.
 # Alternative translation options: "Small Note" or something that

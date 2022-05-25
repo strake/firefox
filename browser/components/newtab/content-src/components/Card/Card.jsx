@@ -258,7 +258,7 @@ export class _Card extends React.PureComponent {
     return (
       <li className={outerClassName}>
         <a
-          href={link.type === "pocket" ? link.open_url : link.url}
+          href={link.url}
           onClick={!props.placeholder ? this.onLinkClick : undefined}
         >
           <div className="card">

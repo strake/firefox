@@ -195,14 +195,6 @@ body {
       transform: scaleX(-1); }
   .icon.icon-edit {
     background-image: url("../data/content/assets/glyph-edit-16.svg"); }
-  .icon.icon-pocket {
-    background-image: url("../data/content/assets/glyph-pocket-16.svg"); }
-  .icon.icon-pocket-save {
-    background-image: url("../data/content/assets/glyph-pocket-save-16.svg"); }
-  .icon.icon-pocket-delete {
-    background-image: url("../data/content/assets/glyph-pocket-delete-16.svg"); }
-  .icon.icon-pocket-archive {
-    background-image: url("../data/content/assets/glyph-pocket-archive-16.svg"); }
   .icon.icon-history-item {
     background-image: url("chrome://browser/skin/history.svg"); }
   .icon.icon-trending {

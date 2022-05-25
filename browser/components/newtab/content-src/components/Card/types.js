@@ -19,10 +19,6 @@ export const cardContextTypes = {
     fluentID: "newtab-label-recommended",
     icon: "trending",
   },
-  pocket: {
-    fluentID: "newtab-label-saved",
-    icon: "pocket",
-  },
   download: {
     fluentID: "newtab-label-download",
     icon: "download",

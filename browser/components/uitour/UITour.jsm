@@ -167,22 +167,6 @@ var UITour = {
     ["home", { query: "#home-button" }],
     ["library", { query: "#appMenu-library-button" }],
     ["logins", { query: "#appMenu-logins-button" }],
-    [
-      "pocket",
-      {
-        allowAdd: true,
-        query: aDocument => {
-          // The pocket's urlbar page action button is pre-defined in the DOM.
-          // It would be hidden if toggled off from the urlbar.
-          let node = aDocument.getElementById("pocket-button");
-          if (node && !node.hidden) {
-            return node;
-          }
-          aDocument.ownerGlobal.BrowserPageActions.placeLazyActionsInPanel();
-          return aDocument.getElementById("pageAction-panel-pocket");
-        },
-      },
-    ],
     ["privateWindow", { query: "#appMenu-private-window-button" }],
     ["quit", { query: "#appMenu-quit-button" }],
     ["readerMode-urlBar", { query: "#reader-mode-button" }],
@@ -1515,13 +1499,6 @@ var UITour = {
     } else if (aMenuName == "bookmarks") {
       let menuBtn = aWindow.document.getElementById("bookmarks-menu-button");
       openMenuButton(menuBtn);
-    } else if (aMenuName == "pocket") {
-      let pageAction = PageActions.actionForID("pocket");
-      if (!pageAction) {
-        log.error("Can't open the pocket menu without a page action");
-        return;
-      }
-      pageAction.doCommand(aWindow);
     } else if (aMenuName == "urlbar") {
       let urlbar = aWindow.gURLBar;
       if (aOpenCallback) {

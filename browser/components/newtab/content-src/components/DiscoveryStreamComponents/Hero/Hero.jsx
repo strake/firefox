@@ -76,7 +76,6 @@ export class Hero extends React.PureComponent {
             context={rec.context}
             context_type={rec.context_type}
             source={rec.domain}
-            pocket_id={rec.pocket_id}
             bookmarkGuid={rec.bookmarkGuid}
             engagement={rec.engagement}
           />
@@ -139,7 +138,6 @@ export class Hero extends React.PureComponent {
             title={heroRec.title}
             source={heroRec.domain}
             type={this.props.type}
-            pocket_id={heroRec.pocket_id}
             shim={heroRec.shim}
             bookmarkGuid={heroRec.bookmarkGuid}
             flightId={heroRec.flight_id}

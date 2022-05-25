@@ -74,11 +74,7 @@ export const selectLayoutRender = ({
     filterArray.push("Navigation");
   }
 
-  const pocketEnabled =
-    prefs["feeds.section.topstories"] && prefs["feeds.system.topstories"];
-  if (!pocketEnabled) {
-    filterArray.push(...DS_COMPONENTS);
-  }
+  filterArray.push(...DS_COMPONENTS);
 
   const placeholderComponent = component => {
     if (!component.feed) {

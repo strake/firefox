@@ -342,29 +342,6 @@ const ONBOARDING_MESSAGES = () => [
     trigger: { id: "showOnboarding" },
   },
   {
-    id: "TRAILHEAD_CARD_8",
-    template: "onboarding",
-    bundled: 3,
-    order: 2,
-    content: {
-      title: { string_id: "onboarding-pocket-anywhere-title" },
-      text: { string_id: "onboarding-pocket-anywhere-text2" },
-      icon: "pocket",
-      primary_button: {
-        label: { string_id: "onboarding-pocket-anywhere-button" },
-        action: {
-          type: "OPEN_URL",
-          data: {
-            args: "https://getpocket.com/firefox_learnmore",
-            where: "tabshifted",
-          },
-        },
-      },
-    },
-    targeting: "trailheadTriplet == 'multidevice' && isChinaRepack == false",
-    trigger: { id: "showOnboarding" },
-  },
-  {
     id: "TRAILHEAD_CARD_9",
     template: "onboarding",
     bundled: 3,
