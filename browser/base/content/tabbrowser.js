@@ -5551,22 +5551,13 @@
           return;
         }
 
-        let isRestartRequiredCrash =
-          event.type == "oop-browser-buildid-mismatch";
-
         let icon = browser.mIconURL;
         let tab = this.getTabForBrowser(browser);
 
         if (this.selectedBrowser == browser) {
-          TabCrashHandler.onSelectedBrowserCrash(
-            browser,
-            isRestartRequiredCrash
-          );
+          TabCrashHandler.onSelectedBrowserCrash(browser);
         } else {
-          TabCrashHandler.onBackgroundBrowserCrash(
-            browser,
-            isRestartRequiredCrash
-          );
+          TabCrashHandler.onBackgroundBrowserCrash(browser);
         }
 
         tab.removeAttribute("soundplaying");

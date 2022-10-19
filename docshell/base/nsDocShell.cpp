@@ -3524,16 +3524,6 @@ nsDocShell::DisplayLoadError(nsresult aError, nsIURI* aURI,
     errorPage.AssignLiteral("framecrashed");
     error = "framecrashed";
     messageStr.AssignLiteral(u" ");
-  } else if (NS_ERROR_BUILDID_MISMATCH == aError) {
-    errorPage.AssignLiteral("restartrequired");
-    error = "restartrequired";
-
-    // DisplayLoadError requires a non-empty messageStr to proceed and call
-    // LoadErrorPage. If the page doesn't have a title, we will use a blank
-    // space which will be trimmed and thus treated as empty by the front-end.
-    if (messageStr.IsEmpty()) {
-      messageStr.AssignLiteral(u" ");
-    }
   } else {
     // Errors requiring simple formatting
     switch (aError) {
@@ -3617,6 +3607,9 @@ nsDocShell::DisplayLoadError(nsresult aError, nsIURI* aURI,
       case NS_ERROR_NET_HTTP3_PROTOCOL_ERROR:
         // HTTP/2 or HTTP/3 stack detected a protocol error
         error = "networkProtocolError";
+        break;
+      case NS_ERROR_BUILDID_MISMATCH:
+        error = "buildIdMismatchError";
         break;
 
       default:

@@ -74,7 +74,6 @@ var TabCrashHandler = {
   browserMap: new BrowserWeakMap(),
   unseenCrashedChildIDs: [],
   crashedBrowserQueues: new Map(),
-  restartRequiredBrowsers: new WeakSet(),
   testBuildIDMismatch: false,
 
   get prefs() {
@@ -189,14 +188,7 @@ var TabCrashHandler = {
     for (let weakBrowser of browserQueue) {
       let browser = weakBrowser.get();
       if (browser) {
-        if (
-          this.restartRequiredBrowsers.has(browser) ||
-          this.testBuildIDMismatch
-        ) {
-          this.sendToRestartRequiredPage(browser);
-        } else {
-          this.sendToTabCrashedPage(browser);
-        }
+        this.sendToTabCrashedPage(browser);
         sentBrowser = true;
       }
     }
@@ -211,10 +203,8 @@ var TabCrashHandler = {
    *
    * @param browser (<xul:browser>)
    *        The selected browser that just crashed.
-   * @param restartRequired (bool)
-   *        Whether or not a browser restart is required to recover.
    */
-  onSelectedBrowserCrash(browser, restartRequired) {
+  onSelectedBrowserCrash(browser) {
     if (!browser.isRemoteBrowser) {
       Cu.reportError("Selected crashed browser is not remote.");
       return;
@@ -239,10 +229,6 @@ var TabCrashHandler = {
     // teardown process.
     browserQueue.push(Cu.getWeakReference(browser));
 
-    if (restartRequired) {
-      this.restartRequiredBrowsers.add(browser);
-    }
-
     // In the event that the content process failed to launch, then
     // the childID will be 0. In that case, we will never receive
     // a dumpID nor an ipc:content-shutdown observer notification,
@@ -260,14 +246,8 @@ var TabCrashHandler = {
    *
    * @param browser (<xul:browser>)
    *        The background browser that just crashed.
-   * @param restartRequired (bool)
-   *        Whether or not a browser restart is required to recover.
    */
-  onBackgroundBrowserCrash(browser, restartRequired) {
-    if (restartRequired) {
-      this.restartRequiredBrowsers.add(browser);
-    }
-
+  onBackgroundBrowserCrash(browser) {
     let gBrowser = browser.getTabBrowser();
     let tab = gBrowser.getTabForBrowser(browser);
 
@@ -313,34 +293,11 @@ var TabCrashHandler = {
         return true;
       }
     } else if (childID === 0) {
-      if (this.restartRequiredBrowsers.has(browser)) {
-        this.sendToRestartRequiredPage(browser);
-      } else {
-        this.sendToTabCrashedPage(browser);
-      }
+      this.sendToTabCrashedPage(browser);
       return true;
     }
 
     return false;
-  },
-
-  sendToRestartRequiredPage(browser) {
-    let uri = browser.currentURI;
-    let gBrowser = browser.getTabBrowser();
-    let tab = gBrowser.getTabForBrowser(browser);
-    // The restart required page is non-remote by default.
-    gBrowser.updateBrowserRemoteness(browser, {
-      remoteType: E10SUtils.NOT_REMOTE,
-    });
-
-    browser.docShell.displayLoadError(Cr.NS_ERROR_BUILDID_MISMATCH, uri, null);
-    tab.setAttribute("crashed", true);
-
-    // Make sure to only count once even if there are multiple windows
-    // that will all show about:restartrequired.
-    if (this._crashedTabCount == 1) {
-      Services.telemetry.scalarAdd("dom.contentprocess.buildID_mismatch", 1);
-    }
   },
 
   /**
