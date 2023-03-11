@@ -38,7 +38,7 @@ using namespace mozilla;
 #  define MOZ_STACKWALK_SUPPORTS_MACOSX 0
 #endif
 
-#if (defined(linux) &&                                            \
+#if (defined(__GLIBC__) && defined(linux) &&                                            \
      ((defined(__GNUC__) && (defined(__i386) || defined(PPC))) || \
       defined(HAVE__UNWIND_BACKTRACE)))
 #  define MOZ_STACKWALK_SUPPORTS_LINUX 1

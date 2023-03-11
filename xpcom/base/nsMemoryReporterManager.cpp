@@ -123,6 +123,7 @@ using namespace dom;
   return GetProcSelfSmapsPrivate(aN);
 }
 
+#ifdef __GLIBC__
 #  ifdef HAVE_MALLINFO
 #    define HAVE_SYSTEM_HEAP_REPORTER 1
 [[nodiscard]] static nsresult SystemHeapSize(int64_t* aSizeOut) {
@@ -142,6 +143,7 @@ using namespace dom;
   return NS_OK;
 }
 #  endif
+#endif // __GLIBC__
 
 #elif defined(__DragonFly__) || defined(__FreeBSD__) || defined(__NetBSD__) || \
     defined(__OpenBSD__) || defined(__FreeBSD_kernel__)
@@ -642,6 +644,7 @@ static bool InSharedRegion(mach_vm_address_t aAddr, cpu_type_t aType) {
   return NS_OK;
 }
 
+#ifdef __GLIBC__
 #  define HAVE_SYSTEM_HEAP_REPORTER 1
 // Windows can have multiple separate heaps, but we should not touch non-default
 // heaps because they may be destroyed at anytime while we hold a handle.  So we
@@ -674,6 +677,7 @@ static bool InSharedRegion(mach_vm_address_t aAddr, cpu_type_t aType) {
   *aSizeOut = heapSize;
   return NS_OK;
 }
+#endif // __GLIBC__
 
 struct SegmentKind {
   DWORD mState;

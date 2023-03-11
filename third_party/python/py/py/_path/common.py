@@ -174,7 +174,7 @@ class PathBase(object):
         """ read and return a list of lines from the path. if cr is False, the
 newline will be removed from the end of each line. """
         if sys.version_info < (3, ):
-            mode = 'rU'
+            mode = 'r'
         else:  # python 3 deprecates mode "U" in favor of "newline" option
             mode = 'r'
 

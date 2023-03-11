@@ -199,7 +199,7 @@
 //!   Numeric casts are not very "precise": sometimes lossy, sometimes value
 //!   preserving, etc.
 
-#![cfg_attr(use_const_generics, feature(const_generics))]
+#![cfg_attr(use_const_generics, feature(adt_const_params, generic_const_exprs))]
 #![cfg_attr(use_const_generics, allow(incomplete_features, clippy::from_over_into))]
 #![feature(
     repr_simd,
@@ -211,7 +211,6 @@
     link_llvm_intrinsics,
     core_intrinsics,
     stmt_expr_attributes,
-    crate_visibility_modifier,
     custom_inner_attributes
 )]
 #![allow(non_camel_case_types, non_snake_case,
@@ -332,6 +331,6 @@ pub use self::codegen::llvm::{
     __shuffle_vector4, __shuffle_vector64, __shuffle_vector8,
 };
 
-crate mod llvm {
-    crate use crate::codegen::llvm::*;
+pub(crate) mod llvm {
+    pub(crate) use crate::codegen::llvm::*;
 }

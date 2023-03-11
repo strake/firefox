@@ -147,7 +147,7 @@ extern "C" {
     fn ctpop_u128x4(x: u128x4) -> u128x4;
 }
 
-crate trait BitManip {
+pub(crate) trait BitManip {
     fn ctpop(self) -> Self;
     fn ctlz(self) -> Self;
     fn cttz(self) -> Self;

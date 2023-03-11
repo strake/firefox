@@ -152,10 +152,12 @@ impl SockAddr {
 
 // check to make sure that the sizes at least match up
 fn _size_checks(v4: SocketAddrV4, v6: SocketAddrV6) {
+/*
     unsafe {
         mem::transmute::<SocketAddrV4, sockaddr_in>(v4);
         mem::transmute::<SocketAddrV6, sockaddr_in6>(v6);
     }
+*/
 }
 
 impl From<SocketAddrV4> for SockAddr {

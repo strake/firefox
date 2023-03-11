@@ -147,7 +147,7 @@ static inline cairo_format_t GfxFormatToCairoFormat(SurfaceFormat format) {
     case SurfaceFormat::R5G6B5_UINT16:
       return CAIRO_FORMAT_RGB16_565;
     default:
-      gfxCriticalError() << "Unknown image format " << (int)format;
+      //gfxCriticalError() << "Unknown image format " << (int)format;
       return CAIRO_FORMAT_ARGB32;
   }
 }

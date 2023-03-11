@@ -1916,6 +1916,14 @@ void DrawTargetSkia::PushLayerWithBlend(bool aOpaque, Float aOpacity,
       SkCanvas::kPreserveLCDText_SaveLayerFlag |
           (aCopyBackground ? SkCanvas::kInitWithPrevious_SaveLayerFlag : 0));
 
+#if MOZ_BIG_ENDIAN
+  // Pushing a layer where an aMask is defined produces wrong output.
+  // We _should_ endian swap the data, but I couldn't find a workable way to do so
+  // Therefore I deactivate those layers in the meantime.
+  // The result is: Tab-titles that are longer than the available space should be faded out.
+  //                The fading doesn't work, so we deactivate the fading-effect here.
+  if (!aMask)
+#endif
   mCanvas->saveLayer(saveRec);
 
   SetPermitSubpixelAA(aOpaque);

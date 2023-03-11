@@ -81,9 +81,6 @@ def unwrap_rustup(prog, name):
 
     return unwrap
 
-rustc = unwrap_rustup(rustc, 'rustc')
-cargo = unwrap_rustup(cargo, 'cargo')
-
 
 set_config('CARGO', cargo)
 set_config('RUSTC', rustc)
@@ -313,11 +310,20 @@ def rust_triple_alias(host_or_target, host_or_target_c_compiler):
                     suffix = 'hf'
                 else:
                     suffix = ''
+
+                narrowed = []
                 for p in prefixes:
                     for c in candidates:
-                        if c.rust_target.startswith('{}-'.format(p)) and \
-                                c.rust_target.endswith(suffix):
-                            return c.rust_target
+                        if c.rust_target.startswith('{}-'.format(p)):
+                            narrowed.append(c.rust_target)
+
+                for target in narrowed:
+                    if target.endswith(host_or_target.raw_os):
+                        return target
+
+                for target in narrowed:
+                    if target.endswith(suffix):
+                        return target
 
             # See if we can narrow down on the exact alias
             narrowed = [c for c in candidates if c.target.alias == host_or_target.alias]
@@ -372,26 +378,6 @@ def rust_triple_alias(host_or_target, host_or_target_c_compiler):
 
             os.write(in_fd, ensure_binary(source))
             os.close(in_fd)
-
-            cmd = [
-                rustc,
-                '--crate-type', 'staticlib',
-                target_arg,
-                '-o', out_path,
-                in_path,
-            ]
-
-            def failed():
-                die(dedent('''\
-                Cannot compile for {} with {}
-                The target may be unsupported, or you may not have
-                a rust std library for that target installed. Try:
-
-                  rustup target add {}
-                '''.format(host_or_target.alias, rustc, rustc_target)))
-            check_cmd_output(*cmd, onerror=failed)
-            if not os.path.exists(out_path) or os.path.getsize(out_path) == 0:
-                failed()
         finally:
             os.remove(in_path)
             os.remove(out_path)

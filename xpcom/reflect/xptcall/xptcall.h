@@ -71,6 +71,11 @@ struct nsXPTCVariant {
     ExtendedVal ext;
   };
 
+#if defined(__powerpc__) && !defined(__powerpc64__)
+  // this field is still necessary on ppc32, as an address
+  // to it is taken certain places in xptcall
+  void *ptr;
+#endif
   nsXPTType type;
   uint8_t flags;
 
@@ -91,7 +96,12 @@ struct nsXPTCVariant {
   };
 
   void ClearFlags() { flags = 0; }
+#if defined(__powerpc__) && !defined(__powerpc64__)
+  void SetIndirect() { ptr = &val; flags |= IS_INDIRECT; }
+  bool IsPtrData() const { return IsIndirect(); }
+#else
   void SetIndirect() { flags |= IS_INDIRECT; }
+#endif
 
   bool IsIndirect() const { return 0 != (flags & IS_INDIRECT); }
 

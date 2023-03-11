@@ -15,6 +15,8 @@
 
 #include <limits>
 
+#include <tuple>
+
 namespace mozilla {
 
 const std::string RsdparsaSdpAttributeList::kEmptyString = "";

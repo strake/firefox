@@ -28,6 +28,8 @@ fn main() {
     env::remove_var(format!("CXXFLAGS_{}", &target));
     env::remove_var(format!("CFLAGS_{}", target.replace("-", "_")));
     env::remove_var(format!("CXXFLAGS_{}", target.replace("-", "_")));
+    env::set_var("HOST_CFLAGS", "-O2");
+    env::set_var("HOST_CXXFLAGS", "-O2");
 
     configure(&mut cc::Build::new())
         .warnings(false)

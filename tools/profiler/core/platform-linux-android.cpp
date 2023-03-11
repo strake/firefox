@@ -288,7 +288,11 @@ Sampler::Sampler(PSLockRef aLock)
 
   // Request profiling signals.
   struct sigaction sa;
+#if defined(GP_ARCH_arm)
+  sa.sa_sigaction = SigprofHandler;
+#else
   sa.sa_sigaction = MOZ_SIGNAL_TRAMPOLINE(SigprofHandler);
+#endif
   sigemptyset(&sa.sa_mask);
   sa.sa_flags = SA_RESTART | SA_SIGINFO;
   if (sigaction(SIGPROF, &sa, &mOldSigprofHandler) != 0) {
@@ -546,8 +550,10 @@ static void PlatformInit(PSLockRef aLock) {}
 ucontext_t sSyncUContext;
 
 void Registers::SyncPopulate() {
+#if defined(__GLIBC__)
   if (!getcontext(&sSyncUContext)) {
     PopulateRegsFromContext(*this, &sSyncUContext);
   }
+#endif
 }
 #endif

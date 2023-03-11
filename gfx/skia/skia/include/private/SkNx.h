@@ -238,7 +238,18 @@ struct SkNx<1,T> {
     AI SkNx operator*(const SkNx& y) const { return fVal * y.fVal; }
     AI SkNx operator/(const SkNx& y) const { return fVal / y.fVal; }
 
+    // On Big endian the commented out variant doesn't work,
+    // and honestly, I have no idea why it exists in the first place.
+    // The reason its broken is, I think, that it defaults to the double-variant of ToBits()
+    // which gets a 64-bit integer, and FromBits returns 32-bit,
+    // cutting off the wrong half again.
+    // Overall, I see no reason to have ToBits and FromBits at all (even for floats/doubles).
+    // Still we are only "fixing" this for big endian and leave little endian alone (never touch a running system)
+#ifdef SK_CPU_BENDIAN
+    AI SkNx operator&(const SkNx& y) const { return fVal & y.fVal; }
+#else
     AI SkNx operator&(const SkNx& y) const { return FromBits(ToBits(fVal) & ToBits(y.fVal)); }
+#endif
     AI SkNx operator|(const SkNx& y) const { return FromBits(ToBits(fVal) | ToBits(y.fVal)); }
     AI SkNx operator^(const SkNx& y) const { return FromBits(ToBits(fVal) ^ ToBits(y.fVal)); }
 

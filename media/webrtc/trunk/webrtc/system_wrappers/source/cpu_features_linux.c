@@ -14,7 +14,7 @@
 #ifndef __GLIBC_PREREQ
 #define __GLIBC_PREREQ(a, b) 0
 #endif
-#if __GLIBC_PREREQ(2, 16)
+#if !__GLIBC__ || __GLIBC_PREREQ(2, 16)
 #include <sys/auxv.h>
 #else
 #include <fcntl.h>
@@ -32,7 +32,7 @@ uint64_t WebRtc_GetCPUFeaturesARM(void) {
   int architecture = 0;
   unsigned long hwcap = 0;
   const char* platform = NULL;
-#if __GLIBC_PREREQ(2, 16)
+#if !__GLIBC__ || __GLIBC_PREREQ(2, 16)
   hwcap = getauxval(AT_HWCAP);
   platform = (const char*)getauxval(AT_PLATFORM);
 #else

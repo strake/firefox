@@ -185,3 +185,7 @@ MOZ_EXPORT void wl_egl_window_destroy(struct wl_egl_window* egl_window) {}
 
 MOZ_EXPORT void wl_egl_window_resize(struct wl_egl_window* egl_window,
                                      int width, int height, int dx, int dy) {}
+
+MOZ_EXPORT struct wl_proxy* wl_proxy_marshal_flags(struct wl_proxy* proxy, uint32_t opcode, const struct wl_interface* interface, uint32_t version, uint32_t flags, ...) {
+  return NULL;
+}

@@ -139,7 +139,7 @@ def build_html_test_file(filename, svgdirectory, htmldirectory):
     logging.debug(htmlpathname)
 
     # read SVG data
-    svgfile = open(svgpathname, "rU")
+    svgfile = open(svgpathname, "r")
     svg = svgfile.read()
     svgfile.close()
 

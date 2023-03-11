@@ -257,7 +257,7 @@ class VirtualenvManager(object):
         return self.virtualenv_root
 
     def packages(self):
-        mode = 'rU' if PY2 else 'r'
+        mode = 'r' if PY2 else 'r'
         with open(self.manifest_path, mode) as fh:
             packages = [line.rstrip().split(':')
                         for line in fh]

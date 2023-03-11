@@ -244,9 +244,9 @@ using mozilla::DebugOnly;
 // If you run into compile problems on a tier-3 platform, you can disable the
 // emulation here.
 
-#if defined(__linux__) && defined(__arm__)
-#  define WASM_EMULATE_ARM_UNALIGNED_FP_ACCESS
-#endif
+// #if defined(__linux__) && defined(__arm__)
+// #  define WASM_EMULATE_ARM_UNALIGNED_FP_ACCESS
+// #endif
 
 #ifdef WASM_EMULATE_ARM_UNALIGNED_FP_ACCESS
 #  include <sys/user.h>

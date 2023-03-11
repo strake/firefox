@@ -34,9 +34,38 @@ bool ConvolutionFilter::GetFilterOffsetAndLength(int32_t aRowIndex,
   return true;
 }
 
+static void ByteSwapArray(uint8_t *u8Array, int32_t size) {
+    uint32_t *array = reinterpret_cast<uint32_t*>(u8Array);
+    for (int pxl = 0; pxl < size; ++pxl) {
+        // Use an endian swap to move the bytes, i.e. BGRA -> ARGB.
+        uint32_t rgba = array[pxl];
+        array[pxl] = NativeEndian::swapToLittleEndian(rgba);
+    }
+}
+
 void ConvolutionFilter::ConvolveHorizontally(const uint8_t* aSrc, uint8_t* aDst,
                                              bool aHasAlpha) {
+#ifdef MOZ_BIG_ENDIAN
+    int outputSize = mFilter->numValues();
+
+    // Input size isn't handed in, so we have to calculate it quickly
+    int inputSize = 0;
+    for (int xx = 0; xx < outputSize; ++xx) {
+        // Get the filter that determines the current output pixel.
+        int filterOffset, filterLength;
+        mFilter->FilterForValue(xx, &filterOffset, &filterLength);
+        inputSize = std::max(inputSize, filterOffset + filterLength);
+    }
+
+    ByteSwapArray((uint8_t*)aSrc, inputSize);
+#endif
+
   SkOpts::convolve_horizontally(aSrc, *mFilter, aDst, aHasAlpha);
+
+#ifdef MOZ_BIG_ENDIAN
+    ByteSwapArray((uint8_t*)aSrc, inputSize);
+    ByteSwapArray(aDst, outputSize);
+#endif
 }
 
 void ConvolutionFilter::ConvolveVertically(uint8_t* const* aSrc, uint8_t* aDst,
@@ -48,8 +77,26 @@ void ConvolutionFilter::ConvolveVertically(uint8_t* const* aSrc, uint8_t* aDst,
   int32_t filterLength;
   auto filterValues =
       mFilter->FilterForValue(aRowIndex, &filterOffset, &filterLength);
+
+#ifdef MOZ_BIG_ENDIAN
+  for (int filterY = 0; filterY < filterLength; filterY++) {
+      // Skia only knows LE, so we have to swizzle the input
+    ByteSwapArray(aSrc[filterY], aRowSize);
+  }
+#endif
+
   SkOpts::convolve_vertically(filterValues, filterLength, aSrc, aRowSize, aDst,
                               aHasAlpha);
+
+#ifdef MOZ_BIG_ENDIAN
+  // After skia is finished, we swizzle back to BE, in case
+  // the input is used again somewhere else
+  for (int filterY = 0; filterY < filterLength; filterY++) {
+    ByteSwapArray(aSrc[filterY], aRowSize);
+  }
+  // The destination array as well
+  ByteSwapArray(aDst, aRowSize);
+#endif
 }
 
 /* ConvolutionFilter::ComputeResizeFactor is derived from Skia's

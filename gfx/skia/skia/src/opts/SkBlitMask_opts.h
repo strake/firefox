@@ -203,7 +203,13 @@ namespace SK_OPTS_NS {
             //   ~~~>
             // a = 1*aa + d(1-1*aa) = aa + d(1-aa)
             // c = 0*aa + d(1-1*aa) =      d(1-aa)
+
+            // For big endian we have to swap the alpha-mask from 0,0,0,255 to 255,0,0,0
+#ifdef SK_CPU_BENDIAN
+            return Sk4px(Sk16b(aa) & Sk16b(255,0,0,0, 255,0,0,0, 255,0,0,0, 255,0,0,0))
+#else
             return Sk4px(Sk16b(aa) & Sk16b(0,0,0,255, 0,0,0,255, 0,0,0,255, 0,0,0,255))
+#endif
                  + d.approxMulDiv255(aa.inv());
         };
         while (h --> 0) {

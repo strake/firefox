@@ -26,10 +26,11 @@ fn _extract_input(derive_input: &str) -> &str {
 		input = &input[expected.len()..];
 	}
 
-	for expected in [")", ").0,", "}"].iter().rev() {
+	for &expected in [&[")"][..], &[").0,", ").0"][..], &["}"][..]].iter().rev() {
 		input = input.trim_end();
-		assert!(input.ends_with(expected), "expected suffix {:?} not found in {:?}", expected, derive_input);
-		let end = input.len() - expected.len();
+		let mut end = None;
+		for alt in expected { if input.ends_with(alt) { end = Some(input.len() - alt.len()); } }
+		let end = end.unwrap_or_else(|| panic!("expected suffix {:?} not found in {:?}", expected, derive_input));
 		input = &input[..end];
 	}
 

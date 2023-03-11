@@ -347,7 +347,7 @@ _directivesre = re.compile(r'(%s)(?:$|\s+)' % '|'.join(_directivestokenlist))
 _varsettokens = (':=', '+=', '?=', '=')
 
 def _parsefile(pathname):
-    fd = open(pathname, "rU")
+    fd = open(pathname, "r")
     stmts = parsestring(fd.read(), pathname)
     stmts.mtime = os.fstat(fd.fileno()).st_mtime
     fd.close()
